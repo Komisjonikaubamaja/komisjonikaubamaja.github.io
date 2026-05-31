@@ -1,15 +1,16 @@
-```css
 :root{
+    --bg:#f4f6f8;
+    --surface:#ffffff;
+    --surface-alt:#faf7e8;
+    --surface-dark:#1f2937;
+
     --yellow:#ffd54a;
-    --yellow-soft:#fff6cf;
-    --dark:#1f2937;
-    --gray:#f7f8fa;
-    --border:#e5e7eb;
-    --text:#111;
-    --text-light:#666;
-    --radius:24px;
-    --shadow:0 12px 30px rgba(0,0,0,.08);
-    --transition:.3s ease;
+    --yellow-soft:#fff3c2;
+
+    --border:#dfe3e8;
+
+    --shadow:
+      0 10px 25px rgba(0,0,0,.05);
 }
 
 *{
@@ -104,6 +105,7 @@ a{
 
 .hero{
     padding:90px 0;
+    background: white;
 }
 
 .hero-grid{
@@ -216,6 +218,14 @@ a{
     padding:90px 0;
 }
 
+.categories{
+    background:white;
+}
+
+.featured{
+    background:#f4f6f8;
+}
+
 .section-title{
     text-align:center;
     margin-bottom:50px;
@@ -228,6 +238,21 @@ a{
 
 .section-title p{
     color:var(--text-light);
+}
+
+.section-title h2::after{
+    content:"";
+
+    display:block;
+
+    width:70px;
+    height:4px;
+
+    background:#ffd54a;
+
+    margin:16px auto 0;
+
+    border-radius:999px;
 }
 
 .product-grid,
@@ -250,14 +275,29 @@ a{
 }
 
 .product-card,
-.feature-card,
-.category-card{
-    background:white;
-    border:1px solid var(--border);
+.feature-card{
+    background:#ffffff;
+    border:1px solid #e6e6e6;
     border-radius:var(--radius);
     padding:28px;
     transition:var(--transition);
 }
+
+.category-card{
+    background:
+      linear-gradient(
+        180deg,
+        #ffffff,
+        #fafafa
+      );
+}
+
+.product-card:hover{
+    transform:translateY(-8px);
+    box-shadow:
+      0 20px 40px rgba(0,0,0,.12);
+}
+
 
 .product-card:hover,
 .feature-card:hover,
@@ -285,19 +325,28 @@ a{
 }
 
 .cta-box{
-    background:linear-gradient(135deg,#fff8dd,#ffffff);
-    border:1px solid var(--border);
-    border-radius:32px;
-    padding:50px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:30px;
+    background:
+      linear-gradient(
+        135deg,
+        #ffd54a,
+        #ffe589
+      );
+
+    border:none;
+}
+
+.cta-box h2,
+.cta-box p{
+    color:#111;
 }
 
 .footer{
-    border-top:1px solid var(--border);
-    padding:40px 0;
+    background:#1f2937;
+    color:white;
+}
+
+.footer a{
+    color:#d1d5db;
 }
 
 .footer-content{
@@ -417,4 +466,6 @@ a{
         margin-bottom:15px;
     }
 }
-```
+.trust{
+    background:#fff8df;
+}
