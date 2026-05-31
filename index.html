@@ -1,129 +1,130 @@
+```html
 <!DOCTYPE html>
 <html lang="et">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Komisjonikaubamaja</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komisjonikaubamaja - Kasutatud Elektroonika Pood</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header>
-    <div class="logo">
-        KOMISJONIKAUBAMAJA
+<header class="header">
+
+    <div class="container nav-container">
+
+        <a href="#" class="logo">
+            Komisjoni<span>kaubamaja</span>
+        </a>
+
+        <nav class="nav" id="navMenu">
+            <a href="#">Avaleht</a>
+            <a href="#">Tooted</a>
+            <a href="#">Telefonid</a>
+            <a href="#">Sülearvutid</a>
+            <a href="#">Konsoolid</a>
+            <a href="#">Kontakt</a>
+
+            <div class="mobile-buttons">
+                <a href="#" class="btn btn-yellow">Otsi tooteid</a>
+                <a href="#" class="btn btn-dark">Müü seade</a>
+            </div>
+        </nav>
+
+        <div class="desktop-buttons">
+            <a href="#" class="btn btn-yellow">Tooted</a>
+            <a href="#" class="btn btn-dark">Müü seade</a>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
     </div>
 
-    <button class="menu-btn" id="menuBtn">
-        ☰
-    </button>
-
-    <nav id="navMenu">
-        <a href="#">Avaleht</a>
-        <a href="#">Tooted</a>
-        <a href="#">Telefonid</a>
-        <a href="#">Arvutid</a>
-        <a href="#">Konsoolid</a>
-        <a href="#">Kontakt</a>
-    </nav>
 </header>
 
 <section class="hero">
 
-    <div class="hero-content">
+    <div class="container hero-grid">
 
-        <span class="badge">
-            ♻️ Kontrollitud kasutatud elektroonika
-        </span>
+        <div class="hero-content">
 
-        <h1>
-            Parimad tehnikapakkumised Eestis
-        </h1>
+            <div class="tag">
+                ✓ Kontrollitud kasutatud elektroonika
+            </div>
 
-        <p>
-            Telefonid, sülearvutid, mängukonsoolid ja palju muud.
-            Kõik seadmed kontrollitud ja valmis uuele omanikule.
-        </p>
+            <h1>
+                Nutikas viis osta
+                <span>kasutatud tehnikat</span>
+            </h1>
 
-        <div class="search-box">
+            <p>
+                Telefonid, sülearvutid, mängukonsoolid, nutikellad ja muu kvaliteetne elektroonika.
+                Kõik seadmed kontrollitud enne müüki.
+            </p>
 
-            <input
-                type="text"
-                placeholder="Otsi telefoni, arvutit või muud..."
-            >
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-yellow large-btn">Vaata tooteid</a>
+                <a href="#" class="btn btn-dark large-btn">Müü oma seade</a>
+            </div>
 
-            <button>
-                Otsi
-            </button>
+            <div class="hero-stats">
+
+                <div class="stat-card">
+                    <h3>2500+</h3>
+                    <p>Müüdud toodet</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>98%</h3>
+                    <p>Rahulolevad kliendid</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>24h</h3>
+                    <p>Kiire tarne</p>
+                </div>
+
+            </div>
 
         </div>
 
-        <div class="hero-buttons">
-            <a href="#" class="primary-btn">
-                Vaata tooteid
-            </a>
+        <div class="hero-image">
 
-            <a href="#" class="secondary-btn">
-                Müü oma seade
-            </a>
-        </div>
+            <div class="floating-card top-card">
+                <p>iPhone 14</p>
+                <span>399€</span>
+            </div>
 
-    </div>
+            <div class="main-card">
 
-</section>
+                <div class="circle"></div>
 
-<section class="stats">
+                <h2>Kontrollitud seadmed</h2>
 
-    <div class="stat">
-        <h2>5000+</h2>
-        <p>Müüdud toodet</p>
-    </div>
+                <p>
+                    Kõik seadmed läbivad tehnilise kontrolli enne müüki.
+                </p>
 
-    <div class="stat">
-        <h2>98%</h2>
-        <p>Rahulolevad kliendid</p>
-    </div>
+                <a href="#" class="btn btn-yellow">
+                    Vaata pakkumisi
+                </a>
 
-    <div class="stat">
-        <h2>24h</h2>
-        <p>Kiire tarne</p>
-    </div>
+            </div>
 
-</section>
+            <div class="floating-card bottom-card">
+                <p>PlayStation 5</p>
+                <span>449€</span>
+            </div>
 
-<section class="categories">
-
-    <h2>Kategooriad</h2>
-
-    <div class="category-grid">
-
-        <div class="category-card">
-            📱
-            <span>Telefonid</span>
-        </div>
-
-        <div class="category-card">
-            💻
-            <span>Sülearvutid</span>
-        </div>
-
-        <div class="category-card">
-            🎮
-            <span>Konsoolid</span>
-        </div>
-
-        <div class="category-card">
-            ⌚
-            <span>Nutikellad</span>
-        </div>
-
-        <div class="category-card">
-            🎧
-            <span>Audio</span>
-        </div>
-
-        <div class="category-card">
-            📷
-            <span>Kaamerad</span>
         </div>
 
     </div>
@@ -132,52 +133,35 @@
 
 <section class="featured">
 
-    <h2>Populaarsed pakkumised</h2>
+    <div class="container">
 
-    <div class="products">
-
-        <div class="product-card">
-
-            <div class="product-image">
-                📱
-            </div>
-
-            <h3>iPhone 13</h3>
-            <p>Väga hea seisukord</p>
-
-            <span class="price">
-                399€
-            </span>
-
+        <div class="section-title">
+            <h2>Populaarsed tooted</h2>
+            <p>Parimad pakkumised sel nädalal</p>
         </div>
 
-        <div class="product-card">
+        <div class="product-grid">
 
-            <div class="product-image">
-                💻
+            <div class="product-card">
+                <div class="product-image">📱</div>
+                <h3>iPhone 13</h3>
+                <p>Väga hea seisukord</p>
+                <span class="price">349€</span>
             </div>
 
-            <h3>MacBook Air M1</h3>
-            <p>Kontrollitud</p>
-
-            <span class="price">
-                699€
-            </span>
-
-        </div>
-
-        <div class="product-card">
-
-            <div class="product-image">
-                🎮
+            <div class="product-card">
+                <div class="product-image">💻</div>
+                <h3>MacBook Air M1</h3>
+                <p>Kontrollitud</p>
+                <span class="price">699€</span>
             </div>
 
-            <h3>PlayStation 5</h3>
-            <p>Garantii</p>
-
-            <span class="price">
-                429€
-            </span>
+            <div class="product-card">
+                <div class="product-image">🎮</div>
+                <h3>PlayStation 5</h3>
+                <p>Garantii</p>
+                <span class="price">449€</span>
+            </div>
 
         </div>
 
@@ -185,38 +169,111 @@
 
 </section>
 
-<section class="sell-banner">
+<section class="trust">
 
-    <h2>Müü oma vana elektroonika</h2>
+    <div class="container">
 
-    <p>
-        Saada seadme info ja saa pakkumine mõne minutiga.
-    </p>
+        <div class="section-title">
+            <h2>Miks valida meid?</h2>
+        </div>
 
-    <a href="#">
-        Küsi pakkumist
-    </a>
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <h3>Kontrollitud seadmed</h3>
+                <p>Kõik tooted läbivad põhjaliku kontrolli.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Kiire tarne</h3>
+                <p>Tarnime üle Eesti kiiresti ja turvaliselt.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Garantii</h3>
+                <p>Valitud toodetele garantii ja tugi.</p>
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
-<footer>
+<section class="categories">
 
-    <div>
-        © 2026 Komisjonikaubamaja
+    <div class="container">
+
+        <div class="section-title">
+            <h2>Populaarsed kategooriad</h2>
+        </div>
+
+        <div class="category-grid">
+
+            <div class="category-card">📱 Telefonid</div>
+            <div class="category-card">💻 Sülearvutid</div>
+            <div class="category-card">🎮 Konsoolid</div>
+            <div class="category-card">⌚ Nutikellad</div>
+            <div class="category-card">🎧 Audio</div>
+            <div class="category-card">📷 Kaamerad</div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="cta">
+
+    <div class="container cta-box">
+
+        <div>
+            <h2>Müü oma vana elektroonika</h2>
+            <p>Saa kiire hinnapakkumine juba täna.</p>
+        </div>
+
+        <div>
+            <a href="#" class="btn btn-yellow">Küsi pakkumist</a>
+        </div>
+
+    </div>
+
+</section>
+
+<footer class="footer">
+
+    <div class="container footer-content">
+
+        <div>
+            <a href="#" class="logo">
+                Komisjoni<span>kaubamaja</span>
+            </a>
+
+            <p class="footer-text">
+                Kasutatud elektroonika pood Eestis.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Tingimused</a>
+            <a href="#">Privaatsus</a>
+            <a href="#">Kontakt</a>
+        </div>
+
     </div>
 
 </footer>
 
 <script>
-
-const menuBtn = document.getElementById("menuBtn");
+const hamburgerBtn = document.getElementById("hamburgerBtn");
 const navMenu = document.getElementById("navMenu");
 
-menuBtn.addEventListener("click", () => {
-    navMenu.classList.toggle("show");
+hamburgerBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+    hamburgerBtn.classList.toggle("active");
 });
-
 </script>
 
 </body>
 </html>
+```
