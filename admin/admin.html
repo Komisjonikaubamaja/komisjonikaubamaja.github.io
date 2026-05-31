@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Komisjonikaubamaja Admin</title>
+
+<link rel="stylesheet" href="admin.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="admin-wrapper">
+
+    <div class="admin-card">
+
+        <div class="brand">
+
+            <div class="brand-icon">🛒</div>
+
+            <div>
+                <h1>Komisjonikaubamaja</h1>
+                <p>Admin Dashboard</p>
+            </div>
+
+        </div>
+
+        <!-- LOGIN -->
+
+        <section id="loginBox">
+
+            <h2>Logi sisse</h2>
+
+            <p class="subtitle">
+                Ainult administraatoritele
+            </p>
+
+            <button id="loginBtn" class="btn-primary">
+                Logi sisse Google kontoga
+            </button>
+
+        </section>
+
+        <!-- ADMIN PANEL -->
+
+        <section id="adminPanel" class="hidden">
+
+            <div class="panel-header">
+
+                <h2>Lisa uus toode</h2>
+
+                <span id="adminEmail"></span>
+
+            </div>
+
+            <div id="success"></div>
+            <div id="error"></div>
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label>Toote nimi</label>
+                    <input id="title" type="text">
+                </div>
+
+                <div class="field">
+                    <label>Hind (€)</label>
+                    <input id="price" type="number">
+                </div>
+
+                <div class="field">
+                    <label>Kategooria</label>
+
+                    <select id="category">
+                        <option>Telefonid</option>
+                        <option>Sülearvutid</option>
+                        <option>Konsoolid</option>
+                        <option>Audio</option>
+                        <option>Nutikellad</option>
+                        <option>Kaamerad</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Laoseis</label>
+                    <input id="stock" type="number" value="1">
+                </div>
+
+            </div>
+
+            <div class="field">
+                <label>Pildi URL</label>
+                <input id="image" type="text">
+            </div>
+
+            <div class="field">
+                <label>Seisukord</label>
+                <input id="condition" type="text">
+            </div>
+
+            <div class="field">
+                <label>Kirjeldus</label>
+                <textarea id="description"></textarea>
+            </div>
+
+            <button id="publishBtn" class="btn-primary">
+                Avalda Toode
+            </button>
+
+        </section>
+
+    </div>
+
+</div>
+
+<script type="module" src="admin.js"></script>
+
+</body>
+</html>
