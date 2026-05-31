@@ -1,0 +1,206 @@
+:root{
+    --yellow:#f5c518;
+    --yellow-dark:#e0b000;
+
+    --bg:#efefef;
+    --card:#ffffff;
+
+    --text:#1b1b1b;
+    --muted:#666;
+
+    --border:#d9d9d9;
+
+    --shadow:
+    0 20px 40px rgba(0,0,0,.08);
+
+    --radius:22px;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:"Inter",sans-serif;
+    background:var(--bg);
+    min-height:100vh;
+    color:var(--text);
+}
+
+.admin-wrapper{
+    padding:40px 20px;
+}
+
+.admin-card{
+    max-width:1000px;
+    margin:auto;
+
+    background:var(--card);
+
+    border-radius:var(--radius);
+
+    padding:40px;
+
+    box-shadow:var(--shadow);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:18px;
+
+    margin-bottom:40px;
+}
+
+.brand-icon{
+    width:70px;
+    height:70px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:2rem;
+
+    background:var(--yellow);
+
+    border-radius:18px;
+}
+
+.brand h1{
+    font-size:1.8rem;
+}
+
+.brand p{
+    color:var(--muted);
+}
+
+.subtitle{
+    margin-top:8px;
+    color:var(--muted);
+}
+
+.hidden{
+    display:none;
+}
+
+.panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:30px;
+}
+
+#adminEmail{
+    font-size:.9rem;
+    color:var(--muted);
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.field{
+    margin-bottom:20px;
+}
+
+.field label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+
+    padding:14px;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    font-family:inherit;
+
+    background:white;
+}
+
+textarea{
+    min-height:140px;
+    resize:vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    outline:none;
+
+    border-color:var(--yellow);
+
+    box-shadow:
+    0 0 0 4px rgba(245,197,24,.2);
+}
+
+.btn-primary{
+    border:none;
+
+    background:var(--yellow);
+
+    color:#111;
+
+    padding:14px 24px;
+
+    border-radius:14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.btn-primary:hover{
+    background:var(--yellow-dark);
+    transform:translateY(-2px);
+}
+
+#error{
+    color:#c62828;
+    margin-bottom:20px;
+}
+
+#success{
+    color:#2e7d32;
+    margin-bottom:20px;
+}
+
+@media(max-width:768px){
+
+    .admin-card{
+        padding:24px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .panel-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .brand{
+        flex-direction:column;
+        text-align:center;
+    }
+
+}
