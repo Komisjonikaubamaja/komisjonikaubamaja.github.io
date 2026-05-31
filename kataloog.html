@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kataloog | Komisjonikaubamaja</title>
+
+<link rel="stylesheet" href="kataloog.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container header-inner">
+
+<a href="index.html" class="logo">
+Komisjoni<span>kaubamaja</span>
+</a>
+
+<a href="index.html" class="back-btn">
+← Avaleht
+</a>
+
+</div>
+
+</header>
+
+<section class="catalog-header">
+
+<div class="container">
+
+<h1>Kasutatud elektroonika</h1>
+
+<p>
+Sirvi kontrollitud seadmeid üle Eesti.
+</p>
+
+<div class="search-row">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Otsi telefoni, arvutit või muud..."
+>
+
+<select id="categoryFilter">
+<option value="">Kõik kategooriad</option>
+<option>Telefonid</option>
+<option>Sülearvutid</option>
+<option>Konsoolid</option>
+<option>Audio</option>
+<option>Nutikellad</option>
+<option>Kaamerad</option>
+</select>
+
+<select id="sortSelect">
+<option value="newest">Uuemad eespool</option>
+<option value="priceLow">Hind ↑</option>
+<option value="priceHigh">Hind ↓</option>
+</select>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="catalog">
+
+<div class="container">
+
+<div id="productsGrid" class="products-grid">
+
+<div class="loading">
+Laen tooteid...
+</div>
+
+</div>
+
+<div id="loadingMore" class="loading-more">
+Laen veel...
+</div>
+
+</div>
+
+</section>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+query,
+orderBy,
+limit,
+startAfter,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAsUhFB7YSlqwaIrNBK7N6Z-Ghs6J0-wI8",
+
+authDomain:
+"komisjonikaubamaja-ee.firebaseapp.com",
+
+projectId:
+"komisjonikaubamaja-ee",
+
+storageBucket:
+"komisjonikaubamaja-ee.firebasestorage.app",
+
+messagingSenderId:
+"529526657582",
+
+appId:
+"1:529526657582:web:1d2973a83f12a1cf3bc5bf",
+
+measurementId:
+"G-5PSEG6CB1K"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+const productsGrid =
+document.getElementById("productsGrid");
+
+const searchInput =
+document.getElementById("searchInput");
+
+const categoryFilter =
+document.getElementById("categoryFilter");
+
+const sortSelect =
+document.getElementById("sortSelect");
+
+const loadingMore =
+document.getElementById("loadingMore");
+
+let allProducts = [];
+
+let lastDoc = null;
+
+let loading = false;
+
+let finished = false;
+
+const PAGE_SIZE = 12;
+
+function createCard(product){
+
+return `
+
+<article class="product-card">
+
+<img
+src="${product.image}"
+alt="${product.title}"
+loading="lazy"
+>
+
+<div class="product-info">
+
+<span class="category">
+${product.category}
+</span>
+
+<h3>
+${product.title}
+</h3>
+
+<p>
+${product.description || ""}
+</p>
+
+<div class="bottom">
+
+<div class="price">
+${product.price}€
+</div>
+
+<div class="condition">
+${product.condition}
+</div>
+
+</div>
+
+</div>
+
+</article>
+
+`;
+
+}
+
+async function loadProducts(){
+
+if(loading || finished) return;
+
+loading = true;
+
+loadingMore.style.display = "block";
+
+let q = query(
+collection(db,"products"),
+orderBy("createdAt","desc"),
+limit(PAGE_SIZE)
+);
+
+if(lastDoc){
+
+q = query(
+collection(db,"products"),
+orderBy("createdAt","desc"),
+startAfter(lastDoc),
+limit(PAGE_SIZE)
+);
+
+}
+
+const snapshot =
+await getDocs(q);
+
+if(snapshot.empty){
+
+finished = true;
+
+loadingMore.style.display = "none";
+
+return;
+
+}
+
+lastDoc =
+snapshot.docs[snapshot.docs.length - 1];
+
+snapshot.forEach(doc=>{
+
+allProducts.push({
+id:doc.id,
+...doc.data()
+});
+
+});
+
+renderProducts();
+
+loading = false;
+
+}
+
+function renderProducts(){
+
+let products =
+[...allProducts];
+
+const search =
+searchInput.value.toLowerCase();
+
+const category =
+categoryFilter.value;
+
+if(search){
+
+products =
+products.filter(p=>
+
+p.title
+.toLowerCase()
+.includes(search)
+
+);
+
+}
+
+if(category){
+
+products =
+products.filter(p=>
+
+p.category === category
+
+);
+
+}
+
+const sort =
+sortSelect.value;
+
+if(sort === "priceLow"){
+
+products.sort(
+(a,b)=>
+a.price-b.price
+);
+
+}
+
+if(sort === "priceHigh"){
+
+products.sort(
+(a,b)=>
+b.price-a.price
+);
+
+}
+
+productsGrid.innerHTML =
+products.map(createCard)
+.join("");
+
+if(products.length===0){
+
+productsGrid.innerHTML =
+
+`
+<div class="empty">
+Tooteid ei leitud.
+</div>
+`;
+
+}
+
+}
+
+searchInput.addEventListener(
+"input",
+renderProducts
+);
+
+categoryFilter.addEventListener(
+"change",
+renderProducts
+);
+
+sortSelect.addEventListener(
+"change",
+renderProducts
+);
+
+window.addEventListener(
+"scroll",
+()=>{
+
+if(
+
+window.innerHeight +
+window.scrollY
+
+>=
+
+document.body.offsetHeight
+-1000
+
+){
+
+loadProducts();
+
+}
+
+}
+);
+
+loadProducts();
+
+</script>
+
+</body>
+</html>
