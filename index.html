@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komisjonikaubamaja - Kasutatud Elektroonika Pood</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="container nav-container">
+        <a href="#" class="logo">Komisjonikaubamaja</a>
+
+        <button class="hamburger" id="hamburger">
+            ☰
+        </button>
+
+        <nav id="nav">
+            <ul>
+                <li><a href="#">Avaleht</a></li>
+                <li><a href="#">Tooted</a></li>
+                <li><a href="#">Nutitelefonid</a></li>
+                <li><a href="#">Sülearvutid</a></li>
+                <li><a href="#">Mängukonsoolid</a></li>
+                <li><a href="#">Kontakt</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <h1>Kvaliteetne kasutatud elektroonika</h1>
+        <p>
+            Kontrollitud seadmed, soodsad hinnad ja kiire tarne üle Eesti.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#" class="btn primary">Vaata tooteid</a>
+            <a href="#" class="btn secondary">Müü oma seade</a>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>Populaarsed kategooriad</h2>
+
+        <div class="card-grid">
+
+            <div class="card">
+                <div class="icon">📱</div>
+                <h3>Nutitelefonid</h3>
+                <p>iPhone, Samsung, Xiaomi ja palju muud.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">💻</div>
+                <h3>Sülearvutid</h3>
+                <p>Tööks, kooliks ja mängimiseks.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">🎮</div>
+                <h3>Mängukonsoolid</h3>
+                <p>PlayStation, Xbox ja Nintendo.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">⌚</div>
+                <h3>Nutikellad</h3>
+                <p>Apple Watch, Garmin ja Samsung.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="why-us">
+    <div class="container">
+        <h2>Miks valida meid?</h2>
+
+        <div class="benefits">
+
+            <div class="benefit">
+                <h3>✓ Kontrollitud seadmed</h3>
+                <p>Kõik seadmed läbivad tehnilise kontrolli.</p>
+            </div>
+
+            <div class="benefit">
+                <h3>✓ Garantii</h3>
+                <p>Eluaegne vahetusgarantii ja  30 päevane tehniline garantii.</p>
+            </div>
+
+            <div class="benefit">
+                <h3>✓ Kiire tarne</h3>
+                <p>Tarnime üle Eesti.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Kas soovid oma vana seadme müüa?</h2>
+        <p>Too see meile või saada hinnapäring juba täna.</p>
+
+        <a href="#" class="btn primary">Küsi pakkumist</a>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>© 2026 Komisjonikaubamaja. Kõik õigused kaitstud.</p>
+    </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById("hamburger");
+const nav = document.getElementById("nav");
+
+hamburger.addEventListener("click", () => {
+    nav.classList.toggle("active");
+});
+</script>
+
+</body>
+</html>
