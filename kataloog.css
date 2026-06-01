@@ -510,3 +510,16 @@ select{
     }
 
 }
+.product-link{
+    text-decoration:none;
+    color:inherit;
+    display:block;
+}
+
+.product-link:hover{
+    color:inherit;
+}
+
+.product-card{
+    cursor:pointer;
+}
