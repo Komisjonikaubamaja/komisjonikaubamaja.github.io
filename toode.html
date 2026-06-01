@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toode - Komisjonikaubamaja</title>
+
+    <link rel="stylesheet" href="toode.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="header">
+
+    <div class="container nav-container">
+
+        <a href="index.html" class="logo">
+            Komisjoni<span>kaubamaja</span>
+        </a>
+
+        <nav class="nav">
+            <a href="https://komisjonikaubamaja.github.io/">Avaleht</a>
+            <a href="https://komisjonikaubamaja.github.io/kataloog">Kataloog</a>
+        </nav>
+
+    </div>
+
+</header>
+
+<main class="product-page">
+
+    <div class="container">
+
+        <div class="breadcrumbs">
+            <a href="https://komisjonikaubamaja.github.io/">Avaleht</a>
+            <span>›</span>
+            <a href="https://komisjonikaubamaja.github.io/kataloog">Kataloog</a>
+            <span>›</span>
+            <span id="breadcrumbTitle">Toode</span>
+        </div>
+
+        <section class="product-layout">
+
+            <!-- GALLERY -->
+
+            <div class="gallery">
+
+                <div class="main-image">
+
+                    <img
+                        id="mainImage"
+                        src="https://placehold.co/1000x700"
+                        alt="Toode"
+                    >
+
+                </div>
+
+                <div class="thumbnail-row" id="thumbnailRow">
+
+                    <img
+                        class="thumbnail active"
+                        src="https://placehold.co/200x200"
+                        alt=""
+                    >
+
+                    <img
+                        class="thumbnail"
+                        src="https://placehold.co/200x200"
+                        alt=""
+                    >
+
+                    <img
+                        class="thumbnail"
+                        src="https://placehold.co/200x200"
+                        alt=""
+                    >
+
+                </div>
+
+            </div>
+
+            <!-- PRODUCT INFO -->
+
+            <div class="product-info">
+
+                <div class="product-category" id="productCategory">
+                    Telefonid
+                </div>
+
+                <h1 id="productTitle">
+                    iPhone 13 Pro
+                </h1>
+
+                <div class="price-row">
+
+                    <span
+                        class="product-price"
+                        id="productPrice"
+                    >
+                        549€
+                    </span>
+
+                    <span
+                        class="status available"
+                        id="productStatus"
+                    >
+                        Saadaval
+                    </span>
+
+                </div>
+
+                <div class="condition-box">
+
+                    <strong>Seisukord:</strong>
+
+                    <span id="productCondition">
+                        Väga hea
+                    </span>
+
+                </div>
+
+                <div class="meta">
+
+                    <div>
+                        👁
+                        <span id="productViews">
+                            0
+                        </span>
+                        vaatamist
+                    </div>
+
+                    <div>
+                        📅
+                        <span id="productDate">
+                            -
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="product-description">
+
+                    <h3>
+                        Kirjeldus
+                    </h3>
+
+                    <p id="productDescription">
+                        Toote kirjeldus laetakse siia Firestore'ist.
+                    </p>
+
+                </div>
+
+                <div class="action-buttons">
+
+                    <a
+                        href="#"
+                        class="btn btn-primary"
+                    >
+                        Küsi infot
+                    </a>
+
+                    <a
+                        href="https://komisjonikaubamaja.github.io/kataloog"
+                        class="btn btn-secondary"
+                    >
+                        Tagasi kataloogi
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<section class="similar-section">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <h2>
+                Sarnased tooted
+            </h2>
+
+            <p>
+                Samast kategooriast
+            </p>
+
+        </div>
+
+        <div
+            class="similar-grid"
+            id="similarProducts"
+        >
+
+            <!-- Firestore fills -->
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer class="footer">
+
+    <div class="container footer-content">
+
+        <div>
+
+            <div class="footer-logo">
+                Komisjoni<span>kaubamaja</span>
+            </div>
+
+            <p>
+                Kasutatud elektroonika pood Eestis.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+<script type="module" src="toode.js"></script>
+
+</body>
+</html>
