@@ -12,7 +12,9 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-/* FIREBASE */
+/* ==========================================
+   FIREBASE
+========================================== */
 
 const firebaseConfig = {
     apiKey: "AIzaSyAsUhFB7YSlqwaIrNBK7N6Z-Ghs6J0-wI8",
@@ -27,7 +29,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* URL */
+/* ==========================================
+   URL PARAMS
+========================================== */
 
 const params =
 new URLSearchParams(window.location.search);
@@ -35,14 +39,32 @@ new URLSearchParams(window.location.search);
 const productId =
 params.get("id");
 
-if(!productId){
+console.log("Product ID:", productId);
 
-    window.location.href =
-    "https://komisjonikaubamaja.github.io/kataloog";
+if (!productId) {
 
+    document.body.innerHTML = `
+        <div style="
+            max-width:800px;
+            margin:80px auto;
+            padding:30px;
+            font-family:Inter,sans-serif;
+            text-align:center;
+        ">
+            <h1>Toodet ei leitud</h1>
+            <p>URL-ist puudub toote ID.</p>
+            <a href="https://komisjonikaubamaja.github.io/kataloog">
+                Tagasi kataloogi
+            </a>
+        </div>
+    `;
+
+    throw new Error("Missing product ID");
 }
 
-/* ELEMENTS */
+/* ==========================================
+   ELEMENTS
+========================================== */
 
 const mainImage =
 document.getElementById("mainImage");
@@ -80,25 +102,39 @@ document.getElementById("productStatus");
 const similarContainer =
 document.getElementById("similarProducts");
 
-/* LOAD PRODUCT */
+/* ==========================================
+   LOAD PRODUCT
+========================================== */
 
-async function loadProduct(){
+async function loadProduct() {
 
-    try{
+    try {
 
         const productRef =
-        doc(db,"products",productId);
+        doc(db, "products", productId);
 
         const snapshot =
         await getDoc(productRef);
 
-        if(!snapshot.exists()){
+        if (!snapshot.exists()) {
 
-            window.location.href =
-            "https://komisjonikaubamaja.github.io/kataloog";
+            document.body.innerHTML = `
+                <div style="
+                    max-width:800px;
+                    margin:80px auto;
+                    padding:30px;
+                    font-family:Inter,sans-serif;
+                    text-align:center;
+                ">
+                    <h1>Toodet ei leitud</h1>
+                    <p>See toode võib olla kustutatud.</p>
+                    <a href="https://komisjonikaubamaja.github.io/kataloog">
+                        Tagasi kataloogi
+                    </a>
+                </div>
+            `;
 
             return;
-
         }
 
         const product =
@@ -106,18 +142,28 @@ async function loadProduct(){
 
         /* VIEW COUNTER */
 
-        await updateDoc(
-            productRef,
-            {
-                views: increment(1)
-            }
-        );
+        try {
 
-        /* TITLE */
+            await updateDoc(
+                productRef,
+                {
+                    views: increment(1)
+                }
+            );
+
+        } catch (e) {
+
+            console.warn(
+                "View counter update failed",
+                e
+            );
+
+        }
+
+        /* PAGE TITLE */
 
         document.title =
-        product.title +
-        " - Komisjonikaubamaja";
+        `${product.title || "Toode"} - Komisjonikaubamaja`;
 
         titleEl.textContent =
         product.title || "Toode";
@@ -126,7 +172,7 @@ async function loadProduct(){
         product.title || "Toode";
 
         priceEl.textContent =
-        (product.price || 0) + "€";
+        `${product.price || 0}€`;
 
         categoryEl.textContent =
         product.category || "Muu";
@@ -146,7 +192,7 @@ async function loadProduct(){
         const status =
         product.status || "available";
 
-        if(status === "sold"){
+        if (status === "sold") {
 
             statusEl.textContent =
             "Müüdud";
@@ -154,25 +200,24 @@ async function loadProduct(){
             statusEl.className =
             "status sold";
 
-        }
-
-        else{
+        } else {
 
             statusEl.textContent =
             "Saadaval";
 
             statusEl.className =
             "status available";
-
         }
 
         /* DATE */
 
-        if(product.createdAt){
+        if (
+            product.createdAt &&
+            typeof product.createdAt.toDate === "function"
+        ) {
 
             const date =
-            product.createdAt
-            .toDate();
+            product.createdAt.toDate();
 
             dateEl.textContent =
             date.toLocaleDateString("et-EE");
@@ -183,25 +228,20 @@ async function loadProduct(){
 
         let images = [];
 
-        if(
-            product.images &&
+        if (
             Array.isArray(product.images) &&
-            product.images.length
-        ){
+            product.images.length > 0
+        ) {
 
             images =
             product.images;
 
-        }
-
-        else if(product.image){
+        } else if (product.image) {
 
             images =
             [product.image];
 
-        }
-
-        else{
+        } else {
 
             images =
             ["https://placehold.co/1000x700"];
@@ -212,7 +252,7 @@ async function loadProduct(){
 
         thumbnailRow.innerHTML = "";
 
-        images.forEach((url,index)=>{
+        images.forEach((url, index) => {
 
             const thumb =
             document.createElement("img");
@@ -227,15 +267,13 @@ async function loadProduct(){
 
             thumb.addEventListener(
                 "click",
-                ()=>{
+                () => {
 
                     mainImage.src =
                     url;
 
                     document
-                    .querySelectorAll(
-                        ".thumbnail"
-                    )
+                    .querySelectorAll(".thumbnail")
                     .forEach(img =>
                         img.classList.remove(
                             "active"
@@ -255,41 +293,54 @@ async function loadProduct(){
 
         });
 
-        /* SIMILAR PRODUCTS */
-
-        loadSimilarProducts(
+        await loadSimilarProducts(
             product.category,
             productId
         );
 
+    } catch (error) {
+
+        console.error(
+            "Failed to load product:",
+            error
+        );
+
+        document.body.innerHTML = `
+            <div style="
+                max-width:800px;
+                margin:80px auto;
+                padding:30px;
+                font-family:Inter,sans-serif;
+                text-align:center;
+            ">
+                <h1>Viga</h1>
+                <p>Toote laadimine ebaõnnestus.</p>
+                <pre style="
+                    margin-top:15px;
+                    color:#c62828;
+                    white-space:pre-wrap;
+                ">
+${error.message}
+                </pre>
+            </div>
+        `;
     }
-
-    catch(error){
-
-        console.error(error);
-
-        window.location.href =
-        "https://komisjonikaubamaja.github.io/kataloog";
-
-    }
-
 }
 
-/* SIMILAR */
+/* ==========================================
+   SIMILAR PRODUCTS
+========================================== */
 
 async function loadSimilarProducts(
     category,
     currentId
-){
+) {
 
-    try{
+    try {
 
         const snapshot =
         await getDocs(
-            collection(
-                db,
-                "products"
-            )
+            collection(db, "products")
         );
 
         const products =
@@ -299,18 +350,13 @@ async function loadSimilarProducts(
             ...doc.data()
         }))
         .filter(product =>
-
             product.id !== currentId &&
             product.category === category
-
         )
-        .sort(() =>
-            0.5 - Math.random()
-        )
-        .slice(0,4);
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 4);
 
-        similarContainer.innerHTML =
-        "";
+        similarContainer.innerHTML = "";
 
         products.forEach(product => {
 
@@ -325,43 +371,40 @@ async function loadSimilarProducts(
 
             card.innerHTML = `
                 <img
-                    src="${
-                        product.image ||
-                        "https://placehold.co/400x300"
-                    }"
+                    src="${product.image || "https://placehold.co/400x300"}"
+                    alt="${product.title || ""}"
                 >
 
                 <div class="similar-content">
 
                     <h3>
-                        ${
-                            product.title ||
-                            "Toode"
-                        }
+                        ${product.title || "Toode"}
                     </h3>
 
                     <div class="similar-price">
-                        ${
-                            product.price || 0
-                        }€
+                        ${product.price || 0}€
                     </div>
 
                 </div>
             `;
 
-            similarContainer
-            .appendChild(card);
+            similarContainer.appendChild(
+                card
+            );
 
         });
 
+    } catch (error) {
+
+        console.error(
+            "Failed to load similar products:",
+            error
+        );
     }
-
-    catch(error){
-
-        console.error(error);
-
-    }
-
 }
+
+/* ==========================================
+   START
+========================================== */
 
 loadProduct();
