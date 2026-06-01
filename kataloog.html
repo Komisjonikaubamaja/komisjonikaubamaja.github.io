@@ -183,47 +183,47 @@ function createCard(product){
 return `
 
 <a
-href="toode.html?id=${product.id}"
-class="product-link"
+    href="toode.html?id=${product.id}"
+    class="product-card"
 >
 
-<article class="product-card">
+    <button
+        class="wishlist-btn"
+        data-id="${product.id}"
+        onclick="event.preventDefault();toggleWishlist('${product.id}')"
+    >
+        ♥
+    </button>
 
-<img
-src="${product.image || 'https://via.placeholder.com/400x300'}"
-alt="${product.title}"
-loading="lazy"
->
+    <img
+        src="${product.image}"
+        alt="${product.title}"
+        loading="lazy"
+    >
 
-<div class="product-info">
+    <div class="product-info">
 
-<span class="category">
-${product.category || ''}
-</span>
+        <span class="category">
+            ${product.category}
+        </span>
 
-<h3>
-${product.title || ''}
-</h3>
+        <h3>${product.title}</h3>
 
-<p>
-${product.description || ''}
-</p>
+        <p>${product.description || ""}</p>
 
-<div class="bottom">
+        <div class="bottom">
 
-<div class="price">
-${product.price || 0}€
-</div>
+            <div class="price">
+                ${product.price}€
+            </div>
 
-<div class="condition">
-${product.condition || ''}
-</div>
+            <div class="condition">
+                ${product.condition}
+            </div>
 
-</div>
+        </div>
 
-</div>
-
-</article>
+    </div>
 
 </a>
 
@@ -400,6 +400,36 @@ loadProducts();
 );
 
 loadProducts();
+
+window.toggleWishlist = function(productId){
+
+    let wishlist =
+    JSON.parse(
+        localStorage.getItem("wishlist")
+        || "[]"
+    );
+
+    if(wishlist.includes(productId)){
+
+        wishlist =
+        wishlist.filter(
+            id => id !== productId
+        );
+
+    }else{
+
+        wishlist.push(productId);
+
+    }
+
+    localStorage.setItem(
+        "wishlist",
+        JSON.stringify(wishlist)
+    );
+
+    renderProducts();
+
+};
 
 </script>
 
