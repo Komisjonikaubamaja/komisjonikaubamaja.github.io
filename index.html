@@ -209,14 +209,15 @@ loadFeaturedProducts();
                 kvaliteediga ning mõistliku hinnaga.
             </p>
 
-            <div class="hero-search">
+           <div class="hero-search">
 
                 <input
                     type="text"
+                    id="homeSearch"
                     placeholder="Otsi telefoni, arvutit või muud..."
                 >
 
-                <button>
+                <button id="homeSearchBtn">
                     Otsi
                 </button>
 
@@ -510,6 +511,53 @@ hamburgerBtn.addEventListener("click", () => {
 
 </script>
 
+<script>
+
+const homeSearch =
+document.getElementById("homeSearch");
+
+const homeSearchBtn =
+document.getElementById("homeSearchBtn");
+
+function performSearch(){
+
+    const term =
+    homeSearch.value.trim();
+
+    if(term){
+
+        window.location.href =
+        `https://komisjonikaubamaja.github.io/kataloog.html?search=${encodeURIComponent(term)}`;
+
+    }else{
+
+        window.location.href =
+        "https://komisjonikaubamaja.github.io/kataloog.html";
+
+    }
+
+}
+
+homeSearchBtn.addEventListener(
+    "click",
+    performSearch
+);
+
+homeSearch.addEventListener(
+    "keypress",
+    (e)=>{
+
+        if(e.key === "Enter"){
+
+            performSearch();
+
+        }
+
+    }
+);
+
+</script>
+    
 </body>
 </html>
 ```
