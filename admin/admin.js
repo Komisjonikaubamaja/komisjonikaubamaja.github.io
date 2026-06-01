@@ -1,4 +1,3 @@
-// Firebase Imports
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
@@ -17,15 +16,18 @@ import {
     getDoc,
     collection,
     addDoc,
+    getDocs,
+    deleteDoc,
     serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-/* -------------------------------- */
-/* FIREBASE CONFIG                  */
-/* -------------------------------- */
+/* ==========================
+   FIREBASE
+========================== */
 
 const firebaseConfig = {
+
     apiKey: "AIzaSyAsUhFB7YSlqwaIrNBK7N6Z-Ghs6J0-wI8",
     authDomain: "komisjonikaubamaja-ee.firebaseapp.com",
     projectId: "komisjonikaubamaja-ee",
@@ -33,22 +35,19 @@ const firebaseConfig = {
     messagingSenderId: "529526657582",
     appId: "1:529526657582:web:1d2973a83f12a1cf3bc5bf",
     measurementId: "G-5PSEG6CB1K"
+
 };
 
-/* -------------------------------- */
-/* INITIALIZE                       */
-/* -------------------------------- */
-
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const provider = new GoogleAuthProvider();
+const provider =
+new GoogleAuthProvider();
 
-/* -------------------------------- */
-/* ELEMENTS                         */
-/* -------------------------------- */
+/* ==========================
+   ELEMENTS
+========================== */
 
 const loginBtn =
 document.getElementById("loginBtn");
@@ -71,15 +70,18 @@ document.getElementById("success");
 const errorBox =
 document.getElementById("error");
 
-/* -------------------------------- */
-/* USER STATE                       */
-/* -------------------------------- */
+const productsList =
+document.getElementById("productsList");
+
+/* ==========================
+   USER
+========================== */
 
 let currentUser = null;
 
-/* -------------------------------- */
-/* LOGIN                            */
-/* -------------------------------- */
+/* ==========================
+   LOGIN
+========================== */
 
 loginBtn.addEventListener(
     "click",
@@ -92,188 +94,311 @@ loginBtn.addEventListener(
                 provider
             );
 
-        } catch (error) {
-
-            console.error(error);
+        } catch(error){
 
             errorBox.textContent =
-                "Sisselogimine ebaõnnestus.";
+            error.message;
 
         }
 
     }
 );
 
-/* -------------------------------- */
-/* AUTH CHECK                       */
-/* -------------------------------- */
+/* ==========================
+   ADMIN CHECK
+========================== */
 
 onAuthStateChanged(
     auth,
-    async (user) => {
+    async(user)=>{
 
-        if (!user) {
-            return;
-        }
+        if(!user) return;
 
         currentUser = user;
 
-        try {
+        const adminRef =
+        doc(
+            db,
+            "admins",
+            user.uid
+        );
 
-            const adminRef =
-                doc(
-                    db,
-                    "admins",
-                    user.uid
-                );
+        const adminSnap =
+        await getDoc(adminRef);
 
-            const adminSnap =
-                await getDoc(adminRef);
+        if(!adminSnap.exists()){
 
-            if (!adminSnap.exists()) {
+            document.body.innerHTML =
+            "<h1>Ligipääs keelatud</h1>";
 
-                document.body.innerHTML = `
-                    <div style="
-                        font-family:Inter,sans-serif;
-                        padding:50px;
-                        text-align:center;
-                    ">
-                        <h1>Ligipääs keelatud</h1>
-                        <p>Sul puuduvad administraatori õigused.</p>
-                    </div>
-                `;
-
-                return;
-            }
-
-            loginBox.classList.add(
-                "hidden"
-            );
-
-            adminPanel.classList.remove(
-                "hidden"
-            );
-
-            adminEmail.textContent =
-                user.email;
-
-        } catch (error) {
-
-            console.error(error);
-
-            errorBox.textContent =
-                error.message;
+            return;
 
         }
+
+        loginBox.classList.add("hidden");
+        adminPanel.classList.remove("hidden");
+
+        adminEmail.textContent =
+        user.email;
+
+        await loadStats();
+        await loadProducts();
 
     }
 );
 
-/* -------------------------------- */
-/* PUBLISH PRODUCT                  */
-/* -------------------------------- */
+/* ==========================
+   ADD PRODUCT
+========================== */
 
 publishBtn.addEventListener(
     "click",
-    async () => {
+    async()=>{
 
-        successBox.textContent = "";
-        errorBox.textContent = "";
-
-        try {
+        try{
 
             const title =
-                document.getElementById("title").value.trim();
+            document.getElementById("title")
+            .value.trim();
 
             const price =
-                Number(
-                    document.getElementById("price").value
-                );
+            Number(
+                document.getElementById("price")
+                .value
+            );
 
             const category =
-                document.getElementById("category").value;
-
-            const image =
-                document.getElementById("image").value.trim();
-
-            const condition =
-                document.getElementById("condition").value.trim();
+            document.getElementById("category")
+            .value;
 
             const description =
-                document.getElementById("description").value.trim();
+            document.getElementById("description")
+            .value.trim();
+
+            const condition =
+            document.getElementById("condition")
+            .value.trim();
 
             const stock =
-                Number(
-                    document.getElementById("stock").value
-                );
+            Number(
+                document.getElementById("stock")
+                .value
+            );
 
-            /* Validation */
+            const images =
+            document.getElementById("images")
+            .value
+            .split("\n")
+            .map(i=>i.trim())
+            .filter(Boolean);
 
-            if (!title) {
-                throw new Error("Sisesta toote nimi.");
-            }
+            if(!title)
+                throw new Error("Toote nimi puudub");
 
-            if (!price || price <= 0) {
-                throw new Error("Sisesta korrektne hind.");
-            }
-
-            if (!image) {
-                throw new Error("Sisesta pildi URL.");
-            }
-
-            /* Firestore */
+            if(images.length === 0)
+                throw new Error("Lisa vähemalt üks pilt");
 
             await addDoc(
-                collection(db, "products"),
+                collection(db,"products"),
                 {
+
                     title,
                     price,
                     category,
-                    image,
-                    condition,
                     description,
+                    condition,
                     stock,
 
+                    image: images[0],
+
+                    images,
+
                     createdAt:
-                        serverTimestamp(),
+                    serverTimestamp(),
 
                     createdBy:
-                        currentUser.uid,
+                    currentUser.uid,
 
                     createdByEmail:
-                        currentUser.email
+                    currentUser.email
+
                 }
             );
 
             successBox.textContent =
-                "✅ Toode edukalt avaldatud.";
+            "✅ Toode lisatud";
 
-            /* Reset form */
+            errorBox.textContent = "";
 
-            document.getElementById("title").value = "";
-            document.getElementById("price").value = "";
-            document.getElementById("image").value = "";
-            document.getElementById("condition").value = "";
-            document.getElementById("description").value = "";
-            document.getElementById("stock").value = "1";
+            document
+            .querySelectorAll(
+                "input,textarea"
+            )
+            .forEach(
+                el=>{
 
-        } catch (error) {
+                    if(
+                        el.id !== "stock"
+                    ){
 
-            console.error(error);
+                        el.value="";
+
+                    }
+
+                }
+            );
+
+            loadStats();
+            loadProducts();
+
+        }catch(error){
 
             errorBox.textContent =
-                error.message;
+            error.message;
 
         }
 
     }
 );
 
-/* -------------------------------- */
-/* OPTIONAL LOGOUT                  */
-/* -------------------------------- */
+/* ==========================
+   STATS
+========================== */
 
-window.logoutAdmin = async () => {
+async function loadStats(){
+
+    const snap =
+    await getDocs(
+        collection(db,"products")
+    );
+
+    let stock = 0;
+
+    const categories =
+    new Set();
+
+    snap.forEach(doc=>{
+
+        const data =
+        doc.data();
+
+        stock +=
+        Number(
+            data.stock || 0
+        );
+
+        categories.add(
+            data.category
+        );
+
+    });
+
+    document.getElementById(
+        "totalProducts"
+    ).textContent =
+    snap.size;
+
+    document.getElementById(
+        "totalCategories"
+    ).textContent =
+    categories.size;
+
+    document.getElementById(
+        "totalStock"
+    ).textContent =
+    stock;
+
+}
+
+/* ==========================
+   PRODUCTS
+========================== */
+
+async function loadProducts(){
+
+    const snap =
+    await getDocs(
+        collection(db,"products")
+    );
+
+    let html = "";
+
+    snap.forEach(docSnap=>{
+
+        const product =
+        docSnap.data();
+
+        html += `
+
+        <div class="admin-product">
+
+            <img
+                src="${product.image}"
+                width="80"
+            >
+
+            <div>
+
+                <strong>
+                    ${product.title}
+                </strong>
+
+                <p>
+                    ${product.price}€
+                </p>
+
+            </div>
+
+            <button
+                class="delete-btn"
+                onclick="deleteProduct('${docSnap.id}')"
+            >
+                Kustuta
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+    productsList.innerHTML =
+    html || "Tooteid pole.";
+
+}
+
+/* ==========================
+   DELETE
+========================== */
+
+window.deleteProduct =
+async(id)=>{
+
+    if(
+        !confirm(
+            "Kustuta toode?"
+        )
+    ) return;
+
+    await deleteDoc(
+        doc(
+            db,
+            "products",
+            id
+        )
+    );
+
+    loadStats();
+    loadProducts();
+
+};
+
+/* ==========================
+   LOGOUT
+========================== */
+
+window.logoutAdmin =
+async()=>{
 
     await signOut(auth);
 
