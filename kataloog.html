@@ -144,6 +144,21 @@ document.getElementById("productsGrid");
 const searchInput =
 document.getElementById("searchInput");
 
+const params =
+new URLSearchParams(
+    window.location.search
+);
+
+const initialSearch =
+params.get("search");
+
+if(initialSearch){
+
+    searchInput.value =
+    initialSearch;
+
+}
+  
 const categoryFilter =
 document.getElementById("categoryFilter");
 
