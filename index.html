@@ -15,6 +15,119 @@
         rel="stylesheet"
     >
 </head>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAsUhFB7YSlqwaIrNBK7N6Z-Ghs6J0-wI8",
+    authDomain: "komisjonikaubamaja-ee.firebaseapp.com",
+    projectId: "komisjonikaubamaja-ee",
+    storageBucket: "komisjonikaubamaja-ee.firebasestorage.app",
+    messagingSenderId: "529526657582",
+    appId: "1:529526657582:web:1d2973a83f12a1cf3bc5bf",
+    measurementId: "G-5PSEG6CB1K"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const featuredContainer =
+document.getElementById("featuredProducts");
+
+async function loadFeaturedProducts(){
+
+    try{
+
+        const snapshot =
+        await getDocs(collection(db,"products"));
+
+        const products =
+        snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        if(products.length === 0){
+
+            featuredContainer.innerHTML =
+            "<p>Tooteid ei leitud.</p>";
+
+            return;
+        }
+
+        const shuffled =
+        products.sort(() => 0.5 - Math.random());
+
+        const selected =
+        shuffled.slice(0,3);
+
+        featuredContainer.innerHTML = "";
+
+        selected.forEach(product => {
+
+            const card =
+            document.createElement("article");
+
+            card.className =
+            "product-card";
+
+            card.innerHTML = `
+                <a href="toode.html?id=${product.id}">
+                
+                    <div class="product-image">
+
+                        ${
+                            product.image
+                            ? `<img src="${product.image}" alt="${product.title}">`
+                            : "📦"
+                        }
+
+                    </div>
+
+                    <h3>
+                        ${product.title || "Toode"}
+                    </h3>
+
+                    <p>
+                        ${product.condition || ""}
+                    </p>
+
+                    <span class="price">
+                        ${product.price || 0}€
+                    </span>
+
+                </a>
+            `;
+
+            featuredContainer.appendChild(card);
+
+        });
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        featuredContainer.innerHTML =
+        "<p>Viga toodete laadimisel.</p>";
+
+    }
+
+}
+
+loadFeaturedProducts();
+
+</script>
 <body>
 
 <!-- HEADER -->
@@ -199,60 +312,16 @@
             </h2>
 
             <p>
-                Selle nädala enim vaadatud pakkumised
+                Juhuslikult valitud pakkumised meie kataloogist
             </p>
 
         </div>
 
-        <div class="product-grid">
+        <div class="product-grid" id="featuredProducts">
 
-            <article class="product-card">
-
-                <div class="product-image">
-                    📱
-                </div>
-
-                <h3>iPhone 13</h3>
-
-                <p>Suurepärane seisukord</p>
-
-                <span class="price">
-                    349€
-                </span>
-
-            </article>
-
-            <article class="product-card">
-
-                <div class="product-image">
-                    💻
-                </div>
-
-                <h3>MacBook Air M1</h3>
-
-                <p>Kontrollitud seade</p>
-
-                <span class="price">
-                    699€
-                </span>
-
-            </article>
-
-            <article class="product-card">
-
-                <div class="product-image">
-                    ⌚
-                </div>
-
-                <h3>Apple Watch</h3>
-
-                <p>Garantii olemas</p>
-
-                <span class="price">
-                    169€
-                </span>
-
-            </article>
+            <div class="product-card skeleton"></div>
+            <div class="product-card skeleton"></div>
+            <div class="product-card skeleton"></div>
 
         </div>
 
