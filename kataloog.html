@@ -167,10 +167,15 @@ function createCard(product){
 
 return `
 
+<a
+href="toode.html?id=${product.id}"
+class="product-link"
+>
+
 <article class="product-card">
 
 <img
-src="${product.image}"
+src="${product.image || 'https://via.placeholder.com/400x300'}"
 alt="${product.title}"
 loading="lazy"
 >
@@ -178,25 +183,25 @@ loading="lazy"
 <div class="product-info">
 
 <span class="category">
-${product.category}
+${product.category || ''}
 </span>
 
 <h3>
-${product.title}
+${product.title || ''}
 </h3>
 
 <p>
-${product.description || ""}
+${product.description || ''}
 </p>
 
 <div class="bottom">
 
 <div class="price">
-${product.price}€
+${product.price || 0}€
 </div>
 
 <div class="condition">
-${product.condition}
+${product.condition || ''}
 </div>
 
 </div>
@@ -204,6 +209,8 @@ ${product.condition}
 </div>
 
 </article>
+
+</a>
 
 `;
 
