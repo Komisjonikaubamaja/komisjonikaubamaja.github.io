@@ -430,3 +430,33 @@ a{
     background:#ececec;
     color:#111;
 }
+.product-disclaimer{
+    margin-top:20px;
+
+    background:#fff8df;
+
+    border:1px solid #f0d46c;
+
+    border-radius:16px;
+
+    padding:18px;
+
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.disclaimer-item{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+
+    color:#444;
+
+    font-size:0.95rem;
+    line-height:1.5;
+}
+
+.disclaimer-item strong{
+    color:#111;
+}
