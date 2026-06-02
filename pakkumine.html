@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Müü meile oma seade</title>
+
+<link rel="stylesheet" href="pakkumine.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="header">
+
+<div class="container header-inner">
+
+<a href="index.html" class="logo">
+Komisjoni<span>kaubamaja</span>
+</a>
+
+<a href="index.html" class="back-btn">
+← Avaleht
+</a>
+
+</div>
+
+</header>
+
+<section class="offer-section">
+
+<div class="container">
+
+<div class="offer-card">
+
+<h1>Müü meile oma seade</h1>
+
+<p class="subtitle">
+Saada meile pakkumine ning võtame sinuga ühendust.
+</p>
+
+<div id="success" class="success"></div>
+<div id="error" class="error"></div>
+
+<div class="form-grid">
+
+<input
+id="name"
+type="text"
+placeholder="Sinu nimi"
+>
+
+<input
+id="email"
+type="email"
+placeholder="E-post"
+>
+
+<input
+id="phone"
+type="text"
+placeholder="Telefon"
+>
+
+<select id="category">
+
+<option value="">
+Vali kategooria
+</option>
+
+<option>Telefonid</option>
+            <option>Sülearvutid</option>
+            <option>Konsoolid</option>
+            <option>Muusikakeskused</option>
+            <option>Nutikellad</option>
+            <option>Kaamerad</option>
+            <option>Kõrvaklapid</option>
+            <option>Kontoriarvutid</option>
+            <option>Jalgrattad</option>
+            <option>Mänguriarvutid</option>
+            <option>Monitorid</option>
+            <option>Televiisorid</option>
+            <option>Nutiboksid</option>
+            <option>Spordiriided</option>
+            <option>Arvutihiired</option>
+            <option>Klaviatuurid</option>
+            <option>Kõlarid</option>
+            <option>Tahvelarvutid</option>
+            <option>Arvutikomponendid</option>
+            <option>DVD</option>
+            <option>Tööriistad</option>
+            <option>Serverid</option>
+            <option>Valvekaamerad</option>
+            <option>Videomängud</option>
+            <option>Õhupüssid</option>
+            <option>Tolmuimejad</option>
+            <option>Rösterid</option>
+            <option>Veekeetjad</option>
+            <option>Suusad</option>
+            <option>Pliidid</option>
+            <option>Printerid</option>
+            <option>Talveriided</option>
+            <option>Kotid</option>
+            <option>VHS</option>
+            <option>Lauatelefonid</option>
+            <option>DJ-puldid</option>
+            <option>Kodukino</option>
+            <option>Kassaaparaadid</option>
+            <option>Telefoniümbrised</option>
+
+</select>
+
+<input
+id="price"
+type="number"
+placeholder="Soovitud hind (€)"
+>
+
+<input
+id="image"
+type="text"
+placeholder="Pildi URL (valikuline)"
+>
+
+</div>
+
+<textarea
+id="description"
+placeholder="Kirjelda toodet..."
+></textarea>
+
+<button id="submitOffer" class="submit-btn">
+Saada pakkumine
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAsUhFB7YSlqwaIrNBK7N6Z-Ghs6J0-wI8",
+authDomain: "komisjonikaubamaja-ee.firebaseapp.com",
+projectId: "komisjonikaubamaja-ee",
+storageBucket: "komisjonikaubamaja-ee.firebasestorage.app",
+messagingSenderId: "529526657582",
+appId: "1:529526657582:web:1d2973a83f12a1cf3bc5bf",
+measurementId: "G-5PSEG6CB1K"
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+const submitBtn =
+document.getElementById("submitOffer");
+
+const successBox =
+document.getElementById("success");
+
+const errorBox =
+document.getElementById("error");
+
+submitBtn.addEventListener(
+"click",
+async ()=>{
+
+successBox.textContent="";
+errorBox.textContent="";
+
+try{
+
+const name =
+document.getElementById("name").value.trim();
+
+const email =
+document.getElementById("email").value.trim();
+
+const phone =
+document.getElementById("phone").value.trim();
+
+const category =
+document.getElementById("category").value;
+
+const price =
+Number(
+document.getElementById("price").value
+);
+
+const image =
+document.getElementById("image").value.trim();
+
+const description =
+document.getElementById("description").value.trim();
+
+if(!name)
+throw new Error("Sisesta nimi.");
+
+if(!phone)
+throw new Error("Sisesta telefon.");
+
+if(!category)
+throw new Error("Vali kategooria.");
+
+if(!description)
+throw new Error("Lisa kirjeldus.");
+
+await addDoc(
+collection(db,"offers"),
+{
+name,
+email,
+phone,
+category,
+price,
+image,
+description,
+
+status:"new",
+
+createdAt:
+serverTimestamp()
+}
+);
+
+successBox.textContent =
+"✅ Pakkumine saadetud.";
+
+document
+.querySelectorAll(
+"input, textarea"
+)
+.forEach(el =>
+el.value=""
+);
+
+document.getElementById(
+"category"
+).selectedIndex = 0;
+
+}
+catch(error){
+
+errorBox.textContent =
+error.message;
+
+}
+
+}
+);
+
+</script>
+
+</body>
+</html>
