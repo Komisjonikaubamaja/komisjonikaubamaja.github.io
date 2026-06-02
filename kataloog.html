@@ -27,7 +27,9 @@ Komisjoni<span>kaubamaja</span>
 <a href="https://komisjonikaubamaja.github.io/" class="back-btn">
 ← Avaleht
 </a>
-
+<button id="wishlistToggle" class="wishlist-toggle">
+    ❤️ <span id="wishlistCount">0</span>
+</button>
 </div>
 
 </header>
@@ -180,55 +182,39 @@ const PAGE_SIZE = 12;
 
 function createCard(product){
 
-return `
+const wishlist =
+JSON.parse(localStorage.getItem("wishlist") || "[]");
 
-<a
-    href="toode.html?id=${product.id}"
-    class="product-card"
->
+const isLiked =
+wishlist.includes(product.id);
+
+return `
+<a href="toode.html?id=${product.id}" class="product-card">
 
     <button
-        class="wishlist-btn"
-        data-id="${product.id}"
+        class="wishlist-btn ${isLiked ? "active" : ""}"
         onclick="event.preventDefault();toggleWishlist('${product.id}')"
     >
-        ♥
+        ❤️
     </button>
 
-    <img
-        src="${product.image}"
-        alt="${product.title}"
-        loading="lazy"
-    >
+    <img src="${product.image}" loading="lazy">
 
     <div class="product-info">
 
-        <span class="category">
-            ${product.category}
-        </span>
+        <span class="category">${product.category}</span>
 
         <h3>${product.title}</h3>
 
-        <p>${product.description || ""}</p>
-
         <div class="bottom">
-
-            <div class="price">
-                ${product.price}€
-            </div>
-
-            <div class="condition">
-                ${product.condition}
-            </div>
-
+            <div class="price">${product.price}€</div>
+            <div class="condition">${product.condition}</div>
         </div>
 
     </div>
 
 </a>
-
 `;
-
 }
 
 async function loadProducts(){
@@ -430,8 +416,98 @@ window.toggleWishlist = function(productId){
     renderProducts();
 
 };
+const wishlistPanel =
+document.getElementById("wishlistPanel");
 
+const wishlistToggle =
+document.getElementById("wishlistToggle");
+
+const wishlistItems =
+document.getElementById("wishlistItems");
+
+const closeWishlist =
+document.getElementById("closeWishlist");
+
+wishlistToggle.addEventListener("click", () => {
+    wishlistPanel.classList.add("open");
+    renderWishlist();
+});
+
+closeWishlist.addEventListener("click", () => {
+    wishlistPanel.classList.remove("open");
+});
+
+window.toggleWishlist = function(id){
+
+    let wishlist =
+    JSON.parse(localStorage.getItem("wishlist") || "[]");
+
+    if(wishlist.includes(id)){
+        wishlist = wishlist.filter(x => x !== id);
+    } else {
+        wishlist.push(id);
+    }
+
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+
+    updateWishlistCount();
+    renderProducts();
+    renderWishlist();
+
+};
+
+function updateWishlistCount(){
+
+    const wishlist =
+    JSON.parse(localStorage.getItem("wishlist") || "[]");
+
+    document.getElementById("wishlistCount").textContent =
+    wishlist.length;
+
+}
+
+async function renderWishlist(){
+
+    const wishlist =
+    JSON.parse(localStorage.getItem("wishlist") || "[]");
+
+    updateWishlistCount();
+
+    if(wishlist.length === 0){
+        wishlistItems.innerHTML =
+        `<p class="empty">Pole lemmikuid</p>`;
+        return;
+    }
+
+    const html = allProducts
+        .filter(p => wishlist.includes(p.id))
+        .map(p => `
+            <a class="wishlist-item" href="toode.html?id=${p.id}">
+                <img src="${p.image}">
+                <div>
+                    <h4>${p.title}</h4>
+                    <span>${p.price}€</span>
+                </div>
+            </a>
+        `)
+        .join("");
+
+    wishlistItems.innerHTML = html;
+}
+
+updateWishlistCount();
 </script>
+<div id="wishlistPanel" class="wishlist-panel">
 
+    <div class="wishlist-header">
+        <h3>Lemmikud</h3>
+        <button id="closeWishlist">✕</button>
+    </div>
+
+    <div id="wishlistItems" class="wishlist-items">
+        <p class="empty">Pole lemmikuid</p>
+    </div>
+
+</div>
 </body>
 </html>
