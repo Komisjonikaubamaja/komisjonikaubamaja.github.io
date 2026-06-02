@@ -18,6 +18,7 @@ import {
     addDoc,
     getDocs,
     deleteDoc,
+    updateDoc,
     serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
@@ -72,6 +73,9 @@ document.getElementById("error");
 
 const productsList =
 document.getElementById("productsList");
+
+const offersContainer =
+document.getElementById("offersContainer");
 
 /* ==========================
    USER
@@ -140,12 +144,140 @@ onAuthStateChanged(
 
         adminEmail.textContent =
         user.email;
-
+        
+        loadOffers();
         await loadStats();
         await loadProducts();
 
     }
 );
+
+async function loadOffers(){
+
+    try{
+
+        const snapshot =
+        await getDocs(
+            collection(db,"offers")
+        );
+
+        if(snapshot.empty){
+
+            offersContainer.innerHTML = `
+                <div class="empty">
+                    Pakkumisi pole.
+                </div>
+            `;
+
+            return;
+        }
+
+        let html = "";
+
+        snapshot.forEach(docSnap=>{
+
+            const offer = docSnap.data();
+
+            html += `
+
+            <div class="offer-card">
+
+                <div class="offer-header">
+
+                    <div class="offer-name">
+                        ${offer.name || "Nimi puudub"}
+                    </div>
+
+                    <div class="offer-category">
+                        ${offer.category || "-"}
+                    </div>
+
+                </div>
+
+                <div class="offer-info">
+
+                    <div>
+                        📧 ${offer.email || "-"}
+                    </div>
+
+                    <div>
+                        📞 ${offer.phone || "-"}
+                    </div>
+
+                    <div>
+                        💰 ${offer.price || 0}€
+                    </div>
+
+                </div>
+
+                <div class="offer-description">
+                    ${offer.description || ""}
+                </div>
+
+                ${
+                    offer.image
+                    ?
+                    `
+                    <img
+                    src="${offer.image}"
+                    style="
+                        margin-top:15px;
+                        max-width:250px;
+                        border-radius:12px;
+                    ">
+                    `
+                    :
+                    ""
+                }
+
+                <div class="offer-actions">
+
+                    <button
+                    class="offer-btn review"
+                    onclick="markReviewed('${docSnap.id}')">
+
+                        Märgi vaadatuks
+
+                    </button>
+
+                    <button
+                    class="offer-btn delete"
+                    onclick="deleteOffer('${docSnap.id}')">
+
+                        Kustuta
+
+                    </button>
+
+                    <button
+                    class="offer-btn convert"
+                    onclick="convertOffer('${docSnap.id}')">
+
+                        Lisa tooteks
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            `;
+
+        });
+
+        offersContainer.innerHTML = html;
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        offersContainer.innerHTML =
+        "Pakkumiste laadimine ebaõnnestus.";
+
+    }
+
+}
 
 /* ==========================
    ADD PRODUCT
@@ -403,5 +535,79 @@ async()=>{
     await signOut(auth);
 
     location.reload();
+
+};
+
+window.markReviewed = async(id)=>{
+
+    await updateDoc(
+        doc(db,"offers",id),
+        {
+            status:"reviewed"
+        }
+    );
+
+    loadOffers();
+
+};
+window.deleteOffer = async(id)=>{
+
+    if(!confirm("Kustutada pakkumine?"))
+        return;
+
+    await deleteDoc(
+        doc(db,"offers",id)
+    );
+
+    loadOffers();
+
+};
+window.convertOffer = async(id)=>{
+
+    const snap =
+    await getDoc(
+        doc(db,"offers",id)
+    );
+
+    if(!snap.exists()) return;
+
+    const offer =
+    snap.data();
+
+    await addDoc(
+        collection(db,"products"),
+        {
+            title:
+                offer.category +
+                " pakkumine",
+
+            category:
+                offer.category,
+
+            description:
+                offer.description,
+
+            image:
+                offer.image || "",
+
+            price:
+                offer.price || 0,
+
+            condition:
+                "Kasutatud",
+
+            status:
+                "available",
+
+            views:0,
+
+            createdAt:
+                serverTimestamp()
+        }
+    );
+
+    alert(
+        "Toode lisatud kataloogi."
+    );
 
 };
