@@ -53,13 +53,11 @@ placeholder="Otsi telefoni, arvutit või muud..."
 >
 
 <select id="categoryFilter">
-<option value="">Kõik kategooriad</option>
-<option>Telefonid</option>
-<option>Sülearvutid</option>
-<option>Konsoolid</option>
-<option>Audio</option>
-<option>Nutikellad</option>
-<option>Kaamerad</option>
+
+    <option value="">
+        Kõik kategooriad
+    </option>
+
 </select>
 
 <select id="sortSelect">
@@ -260,15 +258,16 @@ snapshot.docs[snapshot.docs.length - 1];
 
 snapshot.forEach(doc=>{
 
-allProducts.push({
-id:doc.id,
-...doc.data()
-});
+    allProducts.push({
+        id:doc.id,
+        ...doc.data()
+    });
 
 });
+
+updateCategoryFilter();
 
 renderProducts();
-
 loading = false;
 
 }
@@ -496,6 +495,41 @@ async function renderWishlist(){
 }
 
 updateWishlistCount();
+function updateCategoryFilter(){
+
+    const categories =
+    [...new Set(
+
+        allProducts
+        .map(product => product.category)
+        .filter(Boolean)
+
+    )]
+    .sort();
+
+    categoryFilter.innerHTML =
+    `
+    <option value="">
+        Kõik kategooriad
+    </option>
+    `;
+
+    categories.forEach(category => {
+
+        const option =
+        document.createElement("option");
+
+        option.value =
+        category;
+
+        option.textContent =
+        category;
+
+        categoryFilter.appendChild(option);
+
+    });
+
+}
 </script>
 <div id="wishlistPanel" class="wishlist-panel">
 
