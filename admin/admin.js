@@ -80,6 +80,17 @@ document.getElementById("offersContainer");
 const productsManager =
 document.getElementById("productsManager");
 
+const editModal =
+document.getElementById("editModal");
+
+const closeModalBtn =
+document.getElementById("closeModalBtn");
+
+const saveProductBtn =
+document.getElementById("saveProductBtn");
+
+let editingProductId = null;
+
 /* ==========================
    USER
 ========================== */
@@ -666,6 +677,11 @@ async function loadProductsManager(){
                 ${product.status || "available"}
             </div>
 
+            <div>
+                Laos:
+                ${product.stock ?? 1}
+            </div>
+
             <div class="admin-product-actions">
 
                 <button
@@ -748,17 +764,189 @@ window.hideProduct = async(id)=>{
 };
 window.editProduct = async(id)=>{
 
-    const title =
-    prompt("Uus pealkiri:");
+    try{
 
-    if(!title) return;
+        const snap =
+        await getDoc(
+            doc(db,"products",id)
+        );
 
-    await updateDoc(
-        doc(db,"products",id),
-        {
-            title:title
-        }
-    );
+        if(!snap.exists())
+            return;
 
-    loadProductsManager();
+        const product =
+        snap.data();
+
+        editingProductId = id;
+
+        document.getElementById(
+            "editTitle"
+        ).value =
+        product.title || "";
+
+        document.getElementById(
+            "editPrice"
+        ).value =
+        product.price || "";
+
+        document.getElementById(
+            "editStock"
+        ).value =
+        product.stock ?? 1;
+
+        document.getElementById(
+            "editCategory"
+        ).value =
+        product.category || "";
+
+        document.getElementById(
+            "editCondition"
+        ).value =
+        product.condition || "";
+
+        document.getElementById(
+            "editStatus"
+        ).value =
+        product.status || "available";
+
+        document.getElementById(
+            "editDescription"
+        ).value =
+        product.description || "";
+
+        document.getElementById(
+            "editImages"
+        ).value =
+        product.images
+        ?
+        product.images.join("\n")
+        :
+        (
+            product.image
+            ?
+            product.image
+            :
+            ""
+        );
+
+        editModal.classList.remove(
+            "hidden"
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+    }
+
 };
+closeModalBtn.addEventListener(
+    "click",
+    ()=>{
+        editModal.classList.add(
+            "hidden"
+        );
+    }
+);
+saveProductBtn.addEventListener(
+    "click",
+    async()=>{
+
+        if(!editingProductId)
+            return;
+
+        try{
+
+            const title =
+            document.getElementById(
+                "editTitle"
+            ).value.trim();
+
+            const price =
+            Number(
+                document.getElementById(
+                    "editPrice"
+                ).value
+            );
+
+            const stock =
+            Number(
+                document.getElementById(
+                    "editStock"
+                ).value
+            );
+
+            const category =
+            document.getElementById(
+                "editCategory"
+            ).value.trim();
+
+            const condition =
+            document.getElementById(
+                "editCondition"
+            ).value.trim();
+
+            const status =
+            document.getElementById(
+                "editStatus"
+            ).value;
+
+            const description =
+            document.getElementById(
+                "editDescription"
+            ).value.trim();
+
+            const images =
+            document
+            .getElementById(
+                "editImages"
+            )
+            .value
+            .split("\n")
+            .map(url=>url.trim())
+            .filter(Boolean);
+
+            await updateDoc(
+                doc(
+                    db,
+                    "products",
+                    editingProductId
+                ),
+                {
+                    title,
+                    price,
+                    stock,
+                    category,
+                    condition,
+                    status,
+                    description,
+
+                    images,
+
+                    image:
+                    images[0] || ""
+                }
+            );
+
+            editModal.classList.add(
+                "hidden"
+            );
+
+            loadProductsManager();
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            alert(
+                "Salvestamine ebaõnnestus."
+            );
+
+        }
+
+    }
+);
