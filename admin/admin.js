@@ -630,109 +630,19 @@ window.convertOffer = async(id)=>{
 };
 async function loadProductsManager(){
 
-    allProducts = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
+    const snapshot =
+    await getDocs(
+        collection(db,"products")
+    );
+
+    allProducts =
+    snapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
     }));
 
     renderProducts(allProducts);
-    );
 
-    if(snapshot.empty){
-
-        productsManager.innerHTML =
-        "Tooteid pole.";
-
-        return;
-    }
-
-    let html = "";
-
-    snapshot.forEach(docSnap=>{
-
-        const product =
-        docSnap.data();
-
-        html += `
-
-        <div class="admin-product">
-
-            <div class="admin-product-header">
-
-                <div>
-
-                    <div class="admin-product-title">
-                        ${product.title}
-                    </div>
-
-                    <div>
-                        ${product.category || ""}
-                    </div>
-
-                </div>
-
-                <div class="admin-product-price">
-                    ${product.price || 0}€
-                </div>
-
-            </div>
-
-            <div>
-                Staatus:
-                ${product.status || "available"}
-            </div>
-
-            <div>
-                Laos:
-                ${product.stock ?? 1}
-            </div>
-
-            <div class="admin-product-actions">
-
-                <button
-                class="admin-action-btn btn-edit"
-                onclick="editProduct('${docSnap.id}')">
-
-                    Muuda
-
-                </button>
-
-                <button
-                class="admin-action-btn btn-sold"
-                onclick="markSold('${docSnap.id}')">
-
-                    Märgi müüdud
-
-                </button>
-
-                <button
-                class="admin-action-btn btn-hide"
-                onclick="hideProduct('${docSnap.id}')">
-
-                    Peida
-
-                </button>
-
-                <button
-                class="admin-action-btn btn-delete"
-                onclick="deleteProduct('${docSnap.id}')">
-
-                    Kustuta
-
-                </button>
-
-            </div>
-
-        </div>
-
-        `;
-    });
-
-    productsManager.innerHTML = `
-        <div class="products-manager">
-            ${html}
-        </div>
-    `;
 }
 window.deleteProduct = async(id)=>{
 
@@ -957,55 +867,87 @@ saveProductBtn.addEventListener(
 );
 function renderProducts(products){
 
-    const productsList =
-        document.getElementById("productsList");
+    productsManager.innerHTML = "";
 
-    productsList.innerHTML = "";
+    if(products.length === 0){
+
+        productsManager.innerHTML =
+        "<p>Tooteid ei leitud.</p>";
+
+        return;
+    }
 
     products.forEach(product => {
 
-        const div =
-            document.createElement("div");
+        const card =
+        document.createElement("div");
 
-        div.className =
-            "product-admin-card";
+        card.className =
+        "admin-product";
 
-        div.innerHTML = `
-            <div class="product-admin-info">
+        card.innerHTML = `
 
-                <strong>
+        <div class="admin-product-header">
+
+            <div>
+
+                <div class="admin-product-title">
                     ${product.title}
-                </strong>
-
-                <div>
-                    ${product.price || 0}€
                 </div>
 
                 <div>
-                    Laos:
-                    ${product.stock || 0}
+                    ${product.category || ""}
                 </div>
 
             </div>
 
-            <div class="product-admin-actions">
-
-                <button
-                    onclick="editProduct('${product.id}')"
-                >
-                    Muuda
-                </button>
-
-                <button
-                    onclick="deleteProduct('${product.id}')"
-                >
-                    Kustuta
-                </button>
-
+            <div class="admin-product-price">
+                ${product.price || 0}€
             </div>
+
+        </div>
+
+        <div>
+            Staatus:
+            ${product.status || "available"}
+        </div>
+
+        <div>
+            Laos:
+            ${product.stock ?? 1}
+        </div>
+
+        <div class="admin-product-actions">
+
+            <button
+            class="admin-action-btn btn-edit"
+            onclick="editProduct('${product.id}')">
+                Muuda
+            </button>
+
+            <button
+            class="admin-action-btn btn-sold"
+            onclick="markSold('${product.id}')">
+                Märgi müüdud
+            </button>
+
+            <button
+            class="admin-action-btn btn-hide"
+            onclick="hideProduct('${product.id}')">
+                Peida
+            </button>
+
+            <button
+            class="admin-action-btn btn-delete"
+            onclick="deleteProduct('${product.id}')">
+                Kustuta
+            </button>
+
+        </div>
+
         `;
 
-        productsList.appendChild(div);
+        productsManager.appendChild(card);
 
     });
 
@@ -1013,16 +955,18 @@ function renderProducts(products){
 const productSearch =
 document.getElementById("productSearch");
 
-productSearch.addEventListener(
-    "input",
-    () => {
+if(productSearch){
 
-        const term =
+    productSearch.addEventListener(
+        "input",
+        ()=>{
+
+            const term =
             productSearch.value
             .toLowerCase()
             .trim();
 
-        const filtered =
+            const filtered =
             allProducts.filter(product =>
 
                 (product.title || "")
@@ -1031,7 +975,9 @@ productSearch.addEventListener(
 
             );
 
-        renderProducts(filtered);
+            renderProducts(filtered);
 
-    }
-);
+        }
+    );
+
+}
