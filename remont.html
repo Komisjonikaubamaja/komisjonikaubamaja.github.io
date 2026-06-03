@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Remont | Komisjonikaubamaja</title>
+
+<link rel="stylesheet" href="repair.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="page-header">
+
+    <div class="container">
+
+        <a href="index.html" class="back-btn">
+            ← Avaleht
+        </a>
+
+        <h1>Remondipäring</h1>
+
+        <p>
+            Kirjelda oma seadme probleemi ja võtame sinuga ühendust.
+        </p>
+
+    </div>
+
+</header>
+
+<section class="repair-section">
+
+<div class="container">
+
+<form id="repairForm" class="repair-form">
+
+    <div class="form-grid">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Sinu nimi"
+            required
+        >
+
+        <input
+            type="email"
+            id="email"
+            placeholder="E-post"
+            required
+        >
+
+        <input
+            type="tel"
+            id="phone"
+            placeholder="Telefon"
+            required
+        >
+
+        <select id="category" required>
+
+            <option value="">
+                Vali seadme tüüp
+            </option>
+
+            <option>Telefon</option>
+            <option>Sülearvuti</option>
+            <option>Lauaarvuti</option>
+            <option>Tahvelarvuti</option>
+            <option>Mängukonsool</option>
+            <option>Nutikell</option>
+            <option>Audioseade</option>
+            <option>Muu</option>
+
+        </select>
+
+        <input
+            type="text"
+            id="device"
+            placeholder="Seadme mudel"
+        >
+
+        <input
+            type="text"
+            id="problem"
+            placeholder="Lühike probleemi pealkiri"
+            required
+        >
+
+    </div>
+
+    <textarea
+        id="description"
+        rows="6"
+        placeholder="Kirjelda probleemi võimalikult täpselt..."
+        required
+    ></textarea>
+
+    <textarea
+        id="images"
+        rows="4"
+        placeholder="Piltide URL-id (üks URL rea kohta)"
+    ></textarea>
+
+    <button
+        type="submit"
+        class="submit-btn"
+    >
+        Saada remondipäring
+    </button>
+
+</form>
+
+<div id="success" class="success"></div>
+<div id="error" class="error"></div>
+
+</div>
+
+</section>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyAsUhFB7YSlqwaIrNBK7N6Z-Ghs6J0-wI8",
+authDomain:"komisjonikaubamaja-ee.firebaseapp.com",
+projectId:"komisjonikaubamaja-ee",
+storageBucket:"komisjonikaubamaja-ee.firebasestorage.app",
+messagingSenderId:"529526657582",
+appId:"1:529526657582:web:1d2973a83f12a1cf3bc5bf"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+document
+.getElementById("repairForm")
+.addEventListener(
+"submit",
+async(e)=>{
+
+e.preventDefault();
+
+const success =
+document.getElementById("success");
+
+const error =
+document.getElementById("error");
+
+success.textContent="";
+error.textContent="";
+
+try{
+
+const images =
+document
+.getElementById("images")
+.value
+.split("\n")
+.map(url=>url.trim())
+.filter(Boolean);
+
+await addDoc(
+collection(db,"repairs"),
+{
+
+name:
+document.getElementById("name").value,
+
+email:
+document.getElementById("email").value,
+
+phone:
+document.getElementById("phone").value,
+
+category:
+document.getElementById("category").value,
+
+device:
+document.getElementById("device").value,
+
+problem:
+document.getElementById("problem").value,
+
+description:
+document.getElementById("description").value,
+
+images,
+
+status:"new",
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
+success.textContent =
+"✅ Remondipäring saadetud.";
+
+e.target.reset();
+
+}
+
+catch(err){
+
+error.textContent =
+err.message;
+
+}
+
+}
+);
+
+</script>
+
+</body>
+</html>
