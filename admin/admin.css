@@ -663,3 +663,17 @@ textarea{
 
     cursor:pointer;
 }
+.admin-search{
+    margin:20px 0;
+}
+
+.admin-search input{
+    width:100%;
+    padding:14px 16px;
+
+    border:1px solid #d9d9d9;
+    border-radius:12px;
+
+    background:#fff;
+    font-size:15px;
+}
