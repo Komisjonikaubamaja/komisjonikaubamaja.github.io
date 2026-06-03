@@ -215,6 +215,88 @@
 </section>
 
 <script type="module" src="admin.js"></script>
+<!-- EDIT PRODUCT MODAL -->
 
+<div id="editModal" class="modal hidden">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Muuda toodet</h2>
+
+            <button
+                id="closeModalBtn"
+                class="close-modal"
+            >
+                ✕
+            </button>
+
+        </div>
+
+        <input
+            type="text"
+            id="editTitle"
+            placeholder="Toote nimi"
+        >
+
+        <input
+            type="number"
+            id="editPrice"
+            placeholder="Hind"
+        >
+
+        <input
+            type="text"
+            id="editCategory"
+            placeholder="Kategooria"
+        >
+
+        <input
+            type="text"
+            id="editCondition"
+            placeholder="Seisukord"
+        >
+
+        <select id="editStatus">
+
+            <option value="available">
+                Saadaval
+            </option>
+
+            <option value="reserved">
+                Broneeritud
+            </option>
+
+            <option value="sold">
+                Müüdud
+            </option>
+
+            <option value="hidden">
+                Peidetud
+            </option>
+
+        </select>
+
+        <textarea
+            id="editDescription"
+            placeholder="Kirjeldus"
+        ></textarea>
+
+        <textarea
+            id="editImages"
+            placeholder="Pildid (üks URL rea kohta)"
+        ></textarea>
+
+        <button
+            id="saveProductBtn"
+            class="save-product-btn"
+        >
+            Salvesta muudatused
+        </button>
+
+    </div>
+
+</div>
 </body>
 </html>
