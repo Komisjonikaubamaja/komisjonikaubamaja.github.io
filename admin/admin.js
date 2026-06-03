@@ -90,6 +90,11 @@ document.getElementById("closeModalBtn");
 const saveProductBtn =
 document.getElementById("saveProductBtn");
 
+const repairsContainer =
+document.getElementById(
+    "repairsContainer"
+);
+
 let editingProductId = null;
 
 /* ==========================
@@ -163,6 +168,7 @@ onAuthStateChanged(
         
         loadOffers();
         loadProductsManager();
+        loadRepairs();
         await loadStats();
         await loadProducts();
 
@@ -420,6 +426,15 @@ async function loadStats(){
     await getDocs(
         collection(db,"products")
     );
+    const repairsSnap =
+    await getDocs(
+        collection(db,"repairs")
+    );
+
+    document.getElementById(
+        "totalRepairs"
+    ).textContent =
+    repairsSnap.size;
 
     let stock = 0;
 
@@ -981,3 +996,173 @@ if(productSearch){
     );
 
 }
+async function loadRepairs(){
+
+    try{
+
+        const snapshot =
+        await getDocs(
+            collection(db,"repairs")
+        );
+
+        if(snapshot.empty){
+
+            repairsContainer.innerHTML = `
+                <div class="empty">
+                    Remondipäringuid pole.
+                </div>
+            `;
+
+            return;
+        }
+
+        let html = "";
+
+        snapshot.forEach(docSnap=>{
+
+            const repair =
+            docSnap.data();
+
+            html += `
+
+            <div class="offer-card">
+
+                <div class="offer-header">
+
+                    <div class="offer-name">
+                        ${repair.name || "-"}
+                    </div>
+
+                    <div class="offer-category">
+                        ${repair.category || "-"}
+                    </div>
+
+                </div>
+
+                <div class="offer-info">
+
+                    <div>
+                        📧 ${repair.email || "-"}
+                    </div>
+
+                    <div>
+                        📞 ${repair.phone || "-"}
+                    </div>
+
+                    <div>
+                        📱 ${repair.device || "-"}
+                    </div>
+
+                </div>
+
+                <div class="offer-description">
+
+                    <strong>
+                        ${repair.problem || ""}
+                    </strong>
+
+                    <br><br>
+
+                    ${repair.description || ""}
+
+                </div>
+
+                <div style="margin-top:15px;">
+
+                    Staatus:
+                    <strong>
+                        ${repair.status || "new"}
+                    </strong>
+
+                </div>
+
+                <div class="offer-actions">
+
+                    <button
+                    class="offer-btn review"
+                    onclick="startRepair('${docSnap.id}')">
+
+                        Töös
+
+                    </button>
+
+                    <button
+                    class="offer-btn convert"
+                    onclick="finishRepair('${docSnap.id}')">
+
+                        Valmis
+
+                    </button>
+
+                    <button
+                    class="offer-btn delete"
+                    onclick="deleteRepair('${docSnap.id}')">
+
+                        Kustuta
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            `;
+
+        });
+
+        repairsContainer.innerHTML =
+        html;
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+window.startRepair =
+async(id)=>{
+
+    await updateDoc(
+        doc(db,"repairs",id),
+        {
+            status:"in_progress"
+        }
+    );
+
+    loadRepairs();
+
+};
+
+window.finishRepair =
+async(id)=>{
+
+    await updateDoc(
+        doc(db,"repairs",id),
+        {
+            status:"completed"
+        }
+    );
+
+    loadRepairs();
+
+};
+
+window.deleteRepair =
+async(id)=>{
+
+    if(
+        !confirm(
+            "Kas kustutada remondipäring?"
+        )
+    ) return;
+
+    await deleteDoc(
+        doc(db,"repairs",id)
+    );
+
+    loadRepairs();
+
+};
