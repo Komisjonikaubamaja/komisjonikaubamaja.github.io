@@ -77,6 +77,9 @@ document.getElementById("productsList");
 const offersContainer =
 document.getElementById("offersContainer");
 
+const productsManager =
+document.getElementById("productsManager");
+
 /* ==========================
    USER
 ========================== */
@@ -146,6 +149,7 @@ onAuthStateChanged(
         user.email;
         
         loadOffers();
+        loadProductsManager();
         await loadStats();
         await loadProducts();
 
@@ -610,4 +614,151 @@ window.convertOffer = async(id)=>{
         "Toode lisatud kataloogi."
     );
 
+};
+async function loadProductsManager(){
+
+    const snapshot =
+    await getDocs(
+        collection(db,"products")
+    );
+
+    if(snapshot.empty){
+
+        productsManager.innerHTML =
+        "Tooteid pole.";
+
+        return;
+    }
+
+    let html = "";
+
+    snapshot.forEach(docSnap=>{
+
+        const product =
+        docSnap.data();
+
+        html += `
+
+        <div class="admin-product">
+
+            <div class="admin-product-header">
+
+                <div>
+
+                    <div class="admin-product-title">
+                        ${product.title}
+                    </div>
+
+                    <div>
+                        ${product.category || ""}
+                    </div>
+
+                </div>
+
+                <div class="admin-product-price">
+                    ${product.price || 0}€
+                </div>
+
+            </div>
+
+            <div>
+                Staatus:
+                ${product.status || "available"}
+            </div>
+
+            <div class="admin-product-actions">
+
+                <button
+                class="admin-action-btn btn-edit"
+                onclick="editProduct('${docSnap.id}')">
+
+                    Muuda
+
+                </button>
+
+                <button
+                class="admin-action-btn btn-sold"
+                onclick="markSold('${docSnap.id}')">
+
+                    Märgi müüdud
+
+                </button>
+
+                <button
+                class="admin-action-btn btn-hide"
+                onclick="hideProduct('${docSnap.id}')">
+
+                    Peida
+
+                </button>
+
+                <button
+                class="admin-action-btn btn-delete"
+                onclick="deleteProduct('${docSnap.id}')">
+
+                    Kustuta
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+    });
+
+    productsManager.innerHTML = `
+        <div class="products-manager">
+            ${html}
+        </div>
+    `;
+}
+window.deleteProduct = async(id)=>{
+
+    if(!confirm("Kas kustutada toode?"))
+        return;
+
+    await deleteDoc(
+        doc(db,"products",id)
+    );
+
+    loadProductsManager();
+};
+window.markSold = async(id)=>{
+
+    await updateDoc(
+        doc(db,"products",id),
+        {
+            status:"sold"
+        }
+    );
+
+    loadProductsManager();
+};
+window.hideProduct = async(id)=>{
+
+    await updateDoc(
+        doc(db,"products",id),
+        {
+            status:"hidden"
+        }
+    );
+
+    loadProductsManager();
+};
+window.editProduct = async(id)=>{
+
+    const title =
+    prompt("Uus pealkiri:");
+
+    if(!title) return;
+
+    await updateDoc(
+        doc(db,"products",id),
+        {
+            title:title
+        }
+    );
+
+    loadProductsManager();
 };
