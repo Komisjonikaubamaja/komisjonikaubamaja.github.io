@@ -43,6 +43,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+
 const provider =
 new GoogleAuthProvider();
 
@@ -96,6 +97,7 @@ let editingProductId = null;
 ========================== */
 
 let currentUser = null;
+let allProducts = [];
 
 /* ==========================
    LOGIN
@@ -628,9 +630,12 @@ window.convertOffer = async(id)=>{
 };
 async function loadProductsManager(){
 
-    const snapshot =
-    await getDocs(
-        collection(db,"products")
+    allProducts = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
+
+    renderProducts(allProducts);
     );
 
     if(snapshot.empty){
@@ -947,6 +952,86 @@ saveProductBtn.addEventListener(
             );
 
         }
+
+    }
+);
+function renderProducts(products){
+
+    const productsList =
+        document.getElementById("productsList");
+
+    productsList.innerHTML = "";
+
+    products.forEach(product => {
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "product-admin-card";
+
+        div.innerHTML = `
+            <div class="product-admin-info">
+
+                <strong>
+                    ${product.title}
+                </strong>
+
+                <div>
+                    ${product.price || 0}€
+                </div>
+
+                <div>
+                    Laos:
+                    ${product.stock || 0}
+                </div>
+
+            </div>
+
+            <div class="product-admin-actions">
+
+                <button
+                    onclick="editProduct('${product.id}')"
+                >
+                    Muuda
+                </button>
+
+                <button
+                    onclick="deleteProduct('${product.id}')"
+                >
+                    Kustuta
+                </button>
+
+            </div>
+        `;
+
+        productsList.appendChild(div);
+
+    });
+
+}
+const productSearch =
+document.getElementById("productSearch");
+
+productSearch.addEventListener(
+    "input",
+    () => {
+
+        const term =
+            productSearch.value
+            .toLowerCase()
+            .trim();
+
+        const filtered =
+            allProducts.filter(product =>
+
+                (product.title || "")
+                .toLowerCase()
+                .includes(term)
+
+            );
+
+        renderProducts(filtered);
 
     }
 );
