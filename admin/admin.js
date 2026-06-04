@@ -24,7 +24,7 @@ import {
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 /* ==========================
-   FIREBASE
+   FIREBASE STUFF
 ========================== */
 
 const firebaseConfig = {
@@ -48,7 +48,7 @@ const provider =
 new GoogleAuthProvider();
 
 /* ==========================
-   ELEMENTS
+   ELEMENDID
 ========================== */
 
 const loginBtn =
@@ -98,14 +98,14 @@ document.getElementById(
 let editingProductId = null;
 
 /* ==========================
-   USER
+   KASUTAJA
 ========================== */
 
 let currentUser = null;
 let allProducts = [];
 
 /* ==========================
-   LOGIN
+   SISSELOGIMINE
 ========================== */
 
 loginBtn.addEventListener(
@@ -130,7 +130,7 @@ loginBtn.addEventListener(
 );
 
 /* ==========================
-   ADMIN CHECK
+   ADMINISTRAATORI KONTROLL
 ========================== */
 
 onAuthStateChanged(
@@ -303,7 +303,7 @@ async function loadOffers(){
 }
 
 /* ==========================
-   ADD PRODUCT
+   LISA TOODE
 ========================== */
 
 publishBtn.addEventListener(
@@ -417,7 +417,7 @@ publishBtn.addEventListener(
 );
 
 /* ==========================
-   STATS
+   STATISTIKA
 ========================== */
 
 async function loadStats(){
@@ -475,7 +475,7 @@ async function loadStats(){
 }
 
 /* ==========================
-   PRODUCTS
+   TOOTED
 ========================== */
 
 async function loadProducts(){
@@ -532,7 +532,7 @@ async function loadProducts(){
 }
 
 /* ==========================
-   DELETE
+   KUSTUTAMINE
 ========================== */
 
 window.deleteProduct =
@@ -558,7 +558,7 @@ async(id)=>{
 };
 
 /* ==========================
-   LOGOUT
+   VÄLJA LOGIMINE
 ========================== */
 
 window.logoutAdmin =
