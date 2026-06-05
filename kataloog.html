@@ -56,7 +56,7 @@ placeholder="Otsi telefoni, arvutit või muud..."
     <option value="">Kõik peakategooriad</option>
 </select>
 
-<select id="groupCategoryFilter">
+<select id="subCategoryFilter">
     <option value="">Kõik alamkategooriad</option>
 </select>
 
@@ -802,7 +802,7 @@ mainCategoryFilter.addEventListener(
     mainCategoryFilter.value;
 
     subCategoryFilter.innerHTML =
-    `<option value="">Kõik grupid</option>`;
+    `<option value="">Kõik alamkategooriad</option>`;
 
     categoryFilter.innerHTML =
     `<option value="">Kõik kategooriad</option>`;
