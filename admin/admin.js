@@ -97,6 +97,164 @@ document.getElementById(
 
 let editingProductId = null;
 
+const CATEGORY_TREE = {
+
+    "Elektroonika": {
+
+        "Telefonid": [
+            "Mobiiltelefonid",
+            "Mobiiltelefonide lisaseadmed",
+            "Telefoniümbrised",
+            "Nutikellad",
+            "Tahvelarvutid"
+        ],
+
+        "Arvutid": [
+            "Sülearvutid",
+            "Lauaarvutid",
+            "Kontoriarvutid",
+            "Mänguriarvutid",
+            "Serverid",
+            "Monitorid",
+            "Klaviatuurid",
+            "Arvutihiired",
+            "Arvutikomponendid",
+            "Veebikaamerad",
+            "Võrguseadmed",
+            "UPS-id"
+        ],
+
+        "Mängud ja konsoolid": [
+            "Mängukonsoolid",
+            "Videomängud",
+            "Arvutimängud",
+            "Roolid ja joystickud"
+        ],
+
+        "Foto ja video": [
+            "Kaamerad",
+            "Videokaamerad",
+            "Valvekaamerad",
+            "Projektorid"
+        ],
+
+        "Audio": [
+            "Kõlarid",
+            "Kõrvaklapid",
+            "Muusikakeskused",
+            "Stereoseadmed",
+            "MP3-mängijad",
+            "DJ-puldid"
+        ],
+
+        "TV ja video": [
+            "Televiisorid",
+            "Nutiboksid",
+            "Kodukino",
+            "DVD",
+            "VHS"
+        ]
+    },
+
+    "Kodutehnika": {
+
+        "Köök": [
+            "Pliidid",
+            "Veekeetjad",
+            "Rösterid",
+            "Köögikombainid ja muud köögimasinad"
+        ],
+
+        "Puhastus": [
+            "Tolmuimejad"
+        ],
+
+        "Kliima": [
+            "Kütte- ja kliimaseadmed"
+        ],
+
+        "Muud": [
+            "Muud kodumasinad",
+            "Elektriseadmed"
+        ]
+    },
+
+    "Sport ja vaba aeg": {
+
+        "Jalgrattad": [
+            "Jalgrattad",
+            "Jalgrataste varuosad ja lisaseadmed"
+        ],
+
+        "Sport": [
+            "Suusad",
+            "Trenažöörid",
+            "Spordijalatsid",
+            "Suve- ja sisespordivahendid"
+        ],
+
+        "Matkamine": [
+            "Reisi- ja matkatarbed"
+        ]
+    },
+
+    "Riided ja aksessuaarid": {
+
+        "Riided": [
+            "Meesteriided",
+            "Spordiriided",
+            "Talveriided"
+        ],
+
+        "Aksessuaarid": [
+            "Kotid",
+            "Kellad"
+        ]
+    },
+
+    "Tööriistad ja masinad": {
+
+        "Tööriistad": [
+            "Tööriistad",
+            "Ehitusmasinad",
+            "Autoteeninduse ja -remondi seadmed"
+        ],
+
+        "Masinad": [
+            "Kudumis- ja õmblusmasinad",
+            "Muud masinad ja seadmed"
+        ]
+    },
+
+    "Kodu ja sisustus": {
+
+        "Kodu": [
+            "Aed ja õu",
+            "Lambid ja peeglid",
+            "Vannitoasisustus",
+            "Sisustuselemendid ja muu",
+            "Muud kodutarbed"
+        ]
+    },
+
+    "Muu": {
+
+        "Muu": [
+            "Muu elektroonika",
+            "Muud lisaseadmed ja tarvikud"
+        ]
+    }
+};
+
+const mainCategorySelect =
+document.getElementById("mainCategory");
+
+const subCategorySelect =
+document.getElementById("subCategory");
+
+const categorySelect =
+document.getElementById("category");
+
 /* ==========================
    KASUTAJA
 ========================== */
@@ -322,9 +480,14 @@ publishBtn.addEventListener(
                 .value
             );
 
+            const mainCategory =
+            document.getElementById("mainCategory").value;
+
+            const subCategory =
+            document.getElementById("subCategory").value;
+
             const category =
-            document.getElementById("category")
-            .value;
+            document.getElementById("category").value;
 
             const description =
             document.getElementById("description")
@@ -359,6 +522,8 @@ publishBtn.addEventListener(
 
                     title,
                     price,
+                    mainCategory,
+                    subCategory,
                     category,
                     description,
                     condition,
@@ -1166,3 +1331,68 @@ async(id)=>{
     loadRepairs();
 
 };
+Object.keys(CATEGORY_TREE)
+.forEach(main => {
+
+    mainCategorySelect.innerHTML += `
+        <option value="${main}">
+            ${main}
+        </option>
+    `;
+
+});
+mainCategorySelect.addEventListener(
+"change",
+()=>{
+
+    const selected =
+    mainCategorySelect.value;
+
+    subCategorySelect.innerHTML =
+    `<option value="">Vali alakategooria</option>`;
+
+    categorySelect.innerHTML =
+    `<option value="">Vali kategooria</option>`;
+
+    if(!selected) return;
+
+    Object.keys(
+        CATEGORY_TREE[selected]
+    ).forEach(sub => {
+
+        subCategorySelect.innerHTML += `
+            <option value="${sub}">
+                ${sub}
+            </option>
+        `;
+
+    });
+
+});
+subCategorySelect.addEventListener(
+"change",
+()=>{
+
+    const main =
+    mainCategorySelect.value;
+
+    const sub =
+    subCategorySelect.value;
+
+    categorySelect.innerHTML =
+    `<option value="">Vali kategooria</option>`;
+
+    if(!main || !sub) return;
+
+    CATEGORY_TREE[main][sub]
+    .forEach(cat => {
+
+        categorySelect.innerHTML += `
+            <option value="${cat}">
+                ${cat}
+            </option>
+        `;
+
+    });
+
+});
