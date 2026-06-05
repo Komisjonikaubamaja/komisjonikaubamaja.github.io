@@ -313,8 +313,8 @@ p.title
 const mainCategory =
 mainCategoryFilter.value;
 
-const groupCategory =
-groupCategoryFilter.value;
+const subCategory =
+subCategoryFilter.value;
 
 const category =
 categoryFilter.value;
@@ -330,13 +330,13 @@ if(mainCategory){
 
 }
 
-if(groupCategory){
+if(subCategory){
 
     products =
     products.filter(
         p =>
-        p.categoryGroup ===
-        groupCategory
+        p.subCategory ===
+        subCategory
     );
 
 }
