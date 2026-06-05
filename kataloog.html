@@ -136,6 +136,10 @@ measurementId:
 
 };
 
+const CATEGORY_TREE = {
+   // KÕIK TULEVAD SIIA
+};
+    
 const app =
 initializeApp(firebaseConfig);
 
@@ -163,6 +167,12 @@ if(initialSearch){
 
 }
   
+const mainCategoryFilter =
+document.getElementById("mainCategoryFilter");
+
+const groupCategoryFilter =
+document.getElementById("groupCategoryFilter");
+
 const categoryFilter =
 document.getElementById("categoryFilter");
 
@@ -300,14 +310,45 @@ p.title
 
 }
 
+const mainCategory =
+mainCategoryFilter.value;
+
+const groupCategory =
+groupCategoryFilter.value;
+
+const category =
+categoryFilter.value;
+
+if(mainCategory){
+
+    products =
+    products.filter(
+        p =>
+        p.mainCategory ===
+        mainCategory
+    );
+
+}
+
+if(groupCategory){
+
+    products =
+    products.filter(
+        p =>
+        p.categoryGroup ===
+        groupCategory
+    );
+
+}
+
 if(category){
 
-products =
-products.filter(p=>
-
-p.category === category
-
-);
+    products =
+    products.filter(
+        p =>
+        p.category ===
+        category
+    );
 
 }
 
@@ -534,6 +575,119 @@ function updateCategoryFilter(){
     });
 
 }
+function loadMainCategories(){
+
+    mainCategoryFilter.innerHTML =
+    `<option value="">Kõik peakategooriad</option>`;
+
+    Object.keys(CATEGORY_TREE)
+    .forEach(main=>{
+
+        const option =
+        document.createElement("option");
+
+        option.value = main;
+        option.textContent = main;
+
+        mainCategoryFilter.appendChild(option);
+
+    });
+
+}
+mainCategoryFilter.addEventListener(
+"change",
+()=>{
+
+    const main =
+    mainCategoryFilter.value;
+
+    groupCategoryFilter.innerHTML =
+    `<option value="">Kõik grupid</option>`;
+
+    categoryFilter.innerHTML =
+    `<option value="">Kõik kategooriad</option>`;
+
+    if(!main){
+
+        renderProducts();
+        return;
+    }
+
+    Object.keys(
+        CATEGORY_TREE[main]
+    ).forEach(group=>{
+
+        const option =
+        document.createElement("option");
+
+        option.value = group;
+        option.textContent = group;
+
+        groupCategoryFilter.appendChild(
+            option
+        );
+
+    });
+
+    renderProducts();
+
+});
+loadMainCategories();
+
+groupCategoryFilter.addEventListener(
+"change",
+()=>{
+
+    const main =
+    mainCategoryFilter.value;
+
+    const group =
+    groupCategoryFilter.value;
+
+    categoryFilter.innerHTML =
+    `<option value="">Kõik kategooriad</option>`;
+
+    if(!main || !group){
+
+        renderProducts();
+        return;
+    }
+
+    CATEGORY_TREE[main][group]
+    .forEach(category=>{
+
+        const option =
+        document.createElement("option");
+
+        option.value =
+        category;
+
+        option.textContent =
+        category;
+
+        categoryFilter.appendChild(
+            option
+        );
+
+    });
+
+    renderProducts();
+
+});
+mainCategoryFilter.addEventListener(
+"change",
+renderProducts
+);
+
+groupCategoryFilter.addEventListener(
+"change",
+renderProducts
+);
+
+categoryFilter.addEventListener(
+"change",
+renderProducts
+);
 </script>
 <div id="wishlistPanel" class="wishlist-panel">
 
