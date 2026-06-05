@@ -373,8 +373,8 @@ if(initialSearch){
 const mainCategoryFilter =
 document.getElementById("mainCategoryFilter");
 
-const groupCategoryFilter =
-document.getElementById("groupCategoryFilter");
+const subCategoryFilter =
+document.getElementById("subCategoryFilter");
 
 const categoryFilter =
 document.getElementById("categoryFilter");
@@ -801,7 +801,7 @@ mainCategoryFilter.addEventListener(
     const main =
     mainCategoryFilter.value;
 
-    groupCategoryFilter.innerHTML =
+    subCategoryFilter.innerHTML =
     `<option value="">Kõik grupid</option>`;
 
     categoryFilter.innerHTML =
@@ -823,7 +823,7 @@ mainCategoryFilter.addEventListener(
         option.value = group;
         option.textContent = group;
 
-        groupCategoryFilter.appendChild(
+        subCategoryFilter.appendChild(
             option
         );
 
@@ -834,7 +834,7 @@ mainCategoryFilter.addEventListener(
 });
 loadMainCategories();
 
-groupCategoryFilter.addEventListener(
+subCategoryFilter.addEventListener(
 "change",
 ()=>{
 
@@ -842,7 +842,7 @@ groupCategoryFilter.addEventListener(
     mainCategoryFilter.value;
 
     const group =
-    groupCategoryFilter.value;
+    subCategoryFilter.value;
 
     categoryFilter.innerHTML =
     `<option value="">Kõik kategooriad</option>`;
@@ -879,7 +879,7 @@ mainCategoryFilter.addEventListener(
 renderProducts
 );
 
-groupCategoryFilter.addEventListener(
+subCategoryFilter.addEventListener(
 "change",
 renderProducts
 );
