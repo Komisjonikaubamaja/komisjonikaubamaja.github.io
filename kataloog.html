@@ -57,11 +57,11 @@ placeholder="Otsi telefoni, arvutit või muud..."
 </select>
 
 <select id="groupCategoryFilter">
-    <option value="">Kõik grupid</option>
+    <option value="">Kõik alamkategooriad</option>
 </select>
 
 <select id="categoryFilter">
-    <option value="">Kõik kategooriad</option>
+    <option value="">Kõige alumised kategooriad</option>
 </select>
 
 <select id="sortSelect">
@@ -137,7 +137,210 @@ measurementId:
 };
 
 const CATEGORY_TREE = {
-   // KÕIK TULEVAD SIIA
+
+    "Elektroonika": {
+
+        "Telefonid ja nutiseadmed": [
+            "Mobiiltelefonid",
+            "Mobiiltelefonide lisaseadmed",
+            "Telefoniümbrised",
+            "Nutikellad",
+            "Tahvelarvutid",
+            "Pihuarvutid",
+            "Telefoniaparaadid",
+            "Raadiotelefonid"
+        ],
+
+        "Arvutid": [
+            "Sülearvutid",
+            "Lauaarvutid",
+            "Kontoriarvutid",
+            "Mänguriarvutid",
+            "Serverid",
+            "Monitorid",
+            "Klaviatuurid",
+            "Hiired",
+            "Veebikaamerad",
+            "Võrguseadmed",
+            "UPS-id",
+            "Arvutikomponendid"
+        ],
+
+        "Printerid ja kontor": [
+            "Laserprinterid",
+            "Tindiprinterid",
+            "Skannerid",
+            "Kontoritarbed",
+            "Kassaaparaadid",
+            "Äritarbed"
+        ],
+
+        "Mängud ja konsoolid": [
+            "Mängukonsoolid",
+            "Mängukonsoolide mängud ja lisaseadmed",
+            "Arvutimängud",
+            "Videomängud",
+            "Roolid ja joystickud",
+            "Pordid ja kontrollerid"
+        ],
+
+        "Foto ja video": [
+            "Fotograafia",
+            "Kaamerad",
+            "Videokaamerad",
+            "Valvekaamerad",
+            "Projektorid"
+        ],
+
+        "Audio": [
+            "Kõlarid",
+            "Kõrvaklapid",
+            "Muusikakeskused",
+            "Stereoseadmed",
+            "MP3-mängijad",
+            "DJ-puldid",
+            "Stuudio- ja kontserditehnika"
+        ],
+
+        "TV ja video": [
+            "Televiisorid",
+            "Televiisorid ja lisaseadmed",
+            "Nutiboksid",
+            "Kodukino",
+            "DVD",
+            "VHS",
+            "Videomagnetofonid ja DVD mängijad",
+            "Sat-TV seadmed"
+        ],
+
+        "Muu elektroonika": [
+            "Elektriseadmed",
+            "Muu elektroonika",
+            "Muud lisaseadmed ja tarvikud"
+        ]
+    },
+
+    "Kodutehnika": {
+
+        "Köök": [
+            "Pliidid",
+            "Veekeetjad",
+            "Rösterid",
+            "Köögikombainid ja muud köögimasinad"
+        ],
+
+        "Külmutus": [
+            "Külmkapid ja sügavkülmikud"
+        ],
+
+        "Puhastus": [
+            "Tolmuimejad"
+        ],
+
+        "Kliima": [
+            "Kütte- ja kliimaseadmed"
+        ],
+
+        "Muud kodumasinad": [
+            "Muud kodumasinad"
+        ]
+    },
+
+    "Auto ja moto": {
+
+        "Auto": [
+            "Auto lisaseadmed",
+            "Autode helitehnika",
+            "Autokõlarid"
+        ],
+
+        "Moto": [
+            "Motosõiduvarustus"
+        ]
+    },
+
+    "Sport ja vaba aeg": {
+
+        "Jalgrattad": [
+            "Jalgrattad",
+            "Jalgrataste varuosad ja lisaseadmed"
+        ],
+
+        "Sport": [
+            "Suusad",
+            "Rulluisud",
+            "Trenažöörid",
+            "Spordijalatsid",
+            "Suve- ja sisespordivahendid"
+        ],
+
+        "Matkamine": [
+            "Reisi- ja matkatarbed"
+        ]
+    },
+
+    "Riided ja aksessuaarid": {
+
+        "Riided": [
+            "Meesteriided",
+            "Spordiriided",
+            "Talveriided"
+        ],
+
+        "Aksessuaarid": [
+            "Kotid",
+            "Kellad"
+        ]
+    },
+
+    "Muusika": {
+
+        "Instrumendid": [
+            "Keelpillid",
+            "Klahvpillid"
+        ]
+    },
+
+    "Lapsed ja mänguasjad": {
+
+        "Lapsed": [
+            "Turvahällid",
+            "Muud lastetarbed"
+        ],
+
+        "Mänguasjad": [
+            "Mänguasjad: Mehaanilised ja üleskeeratavad",
+            "Mänguasjad: Rollimängud",
+            "Mänguasjad: Suvised mänguasjad",
+            "Mudelid ja raadio teel juhitavad autod"
+        ]
+    },
+
+    "Kodu ja sisustus": {
+
+        "Kodu": [
+            "Aed ja õu",
+            "Lambid ja peeglid",
+            "Vannitoasisustus",
+            "Sisustuselemendid ja muu",
+            "Muud kodutarbed"
+        ]
+    },
+
+    "Tööriistad ja masinad": {
+
+        "Tööriistad": [
+            "Tööriistad",
+            "Ehitusmasinad",
+            "Autoteeninduse ja -remondi seadmed"
+        ],
+
+        "Masinad": [
+            "Kudumis- ja õmblusmasinad",
+            "Muud masinad ja seadmed"
+        ]
+    }
+
 };
     
 const app =
