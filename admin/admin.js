@@ -101,12 +101,15 @@ const CATEGORY_TREE = {
 
     "Elektroonika": {
 
-        "Telefonid": [
+        "Telefonid ja nutiseadmed": [
             "Mobiiltelefonid",
             "Mobiiltelefonide lisaseadmed",
             "Telefoniümbrised",
             "Nutikellad",
-            "Tahvelarvutid"
+            "Tahvelarvutid",
+            "Pihuarvutid",
+            "Telefoniaparaadid",
+            "Raadiotelefonid"
         ],
 
         "Arvutid": [
@@ -117,21 +120,33 @@ const CATEGORY_TREE = {
             "Serverid",
             "Monitorid",
             "Klaviatuurid",
-            "Arvutihiired",
-            "Arvutikomponendid",
+            "Hiired",
             "Veebikaamerad",
             "Võrguseadmed",
-            "UPS-id"
+            "UPS-id",
+            "Arvutikomponendid"
+        ],
+
+        "Printerid ja kontor": [
+            "Laserprinterid",
+            "Tindiprinterid",
+            "Skannerid",
+            "Kontoritarbed",
+            "Kassaaparaadid",
+            "Äritarbed"
         ],
 
         "Mängud ja konsoolid": [
             "Mängukonsoolid",
-            "Videomängud",
+            "Mängukonsoolide mängud ja lisaseadmed",
             "Arvutimängud",
-            "Roolid ja joystickud"
+            "Videomängud",
+            "Roolid ja joystickud",
+            "Pordid ja kontrollerid"
         ],
 
         "Foto ja video": [
+            "Fotograafia",
             "Kaamerad",
             "Videokaamerad",
             "Valvekaamerad",
@@ -144,15 +159,25 @@ const CATEGORY_TREE = {
             "Muusikakeskused",
             "Stereoseadmed",
             "MP3-mängijad",
-            "DJ-puldid"
+            "DJ-puldid",
+            "Stuudio- ja kontserditehnika"
         ],
 
         "TV ja video": [
             "Televiisorid",
+            "Televiisorid ja lisaseadmed",
             "Nutiboksid",
             "Kodukino",
             "DVD",
-            "VHS"
+            "VHS",
+            "Videomagnetofonid ja DVD mängijad",
+            "Sat-TV seadmed"
+        ],
+
+        "Muu elektroonika": [
+            "Elektriseadmed",
+            "Muu elektroonika",
+            "Muud lisaseadmed ja tarvikud"
         ]
     },
 
@@ -165,6 +190,10 @@ const CATEGORY_TREE = {
             "Köögikombainid ja muud köögimasinad"
         ],
 
+        "Külmutus": [
+            "Külmkapid ja sügavkülmikud"
+        ],
+
         "Puhastus": [
             "Tolmuimejad"
         ],
@@ -173,9 +202,21 @@ const CATEGORY_TREE = {
             "Kütte- ja kliimaseadmed"
         ],
 
-        "Muud": [
-            "Muud kodumasinad",
-            "Elektriseadmed"
+        "Muud kodumasinad": [
+            "Muud kodumasinad"
+        ]
+    },
+
+    "Auto ja moto": {
+
+        "Auto": [
+            "Auto lisaseadmed",
+            "Autode helitehnika",
+            "Autokõlarid"
+        ],
+
+        "Moto": [
+            "Motosõiduvarustus"
         ]
     },
 
@@ -188,6 +229,7 @@ const CATEGORY_TREE = {
 
         "Sport": [
             "Suusad",
+            "Rulluisud",
             "Trenažöörid",
             "Spordijalatsid",
             "Suve- ja sisespordivahendid"
@@ -212,17 +254,26 @@ const CATEGORY_TREE = {
         ]
     },
 
-    "Tööriistad ja masinad": {
+    "Muusika": {
 
-        "Tööriistad": [
-            "Tööriistad",
-            "Ehitusmasinad",
-            "Autoteeninduse ja -remondi seadmed"
+        "Instrumendid": [
+            "Keelpillid",
+            "Klahvpillid"
+        ]
+    },
+
+    "Lapsed ja mänguasjad": {
+
+        "Lapsed": [
+            "Turvahällid",
+            "Muud lastetarbed"
         ],
 
-        "Masinad": [
-            "Kudumis- ja õmblusmasinad",
-            "Muud masinad ja seadmed"
+        "Mänguasjad": [
+            "Mänguasjad: Mehaanilised ja üleskeeratavad",
+            "Mänguasjad: Rollimängud",
+            "Mänguasjad: Suvised mänguasjad",
+            "Mudelid ja raadio teel juhitavad autod"
         ]
     },
 
@@ -237,13 +288,20 @@ const CATEGORY_TREE = {
         ]
     },
 
-    "Muu": {
+    "Tööriistad ja masinad": {
 
-        "Muu": [
-            "Muu elektroonika",
-            "Muud lisaseadmed ja tarvikud"
+        "Tööriistad": [
+            "Tööriistad",
+            "Ehitusmasinad",
+            "Autoteeninduse ja -remondi seadmed"
+        ],
+
+        "Masinad": [
+            "Kudumis- ja õmblusmasinad",
+            "Muud masinad ja seadmed"
         ]
     }
+
 };
 
 const mainCategorySelect =
